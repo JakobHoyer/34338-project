@@ -44,13 +44,22 @@ LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 // Init array that will store new NUID 
 byte nuidPICC[4];
 
+// Søren preset
+byte preset1[4] = {0xA2, 0x9F, 0x8A, 0x3F};
+
+
+
+
+
+
+
 void setup() { 
   Serial.begin(9600);
   SPI.begin(); // Init SPI bus
   rfid.PCD_Init(); // Init MFRC522 
-  lcd.begin(16, 2);
+lcd.begin(16, 2);
   // Print a message to the LCD.
-  lcd.print("hello, world!");
+//  lcd.print("hello, world!");
   Serial.println(F("This code scan the MIFARE Classsic NUID."));
 }
  
@@ -105,10 +114,32 @@ void loop() {
   // Stop encryption on PCD
   rfid.PCD_StopCrypto1();
 
-
+compareByteArrays(nuidPICC, preset1, 4);
 
 }
 
+
+void compareByteArrays(byte *array1, byte *array2, size_t size) {
+    bool areIdentical = true; // Flag to track if arrays are identical
+
+    for (size_t i = 0; i < size; i++) {
+        if (array1[i] != array2[i]) {
+            areIdentical = false; // Set flag to false if a mismatch is found
+            break;
+        }
+    } 
+
+    // Print the result
+    if (areIdentical) {
+        Serial.println("The arrays are identical.");
+        lcd.setCursor(0, 0); // Set the LCD cursor position
+        lcd.print("Soerens card");
+    } else {
+        Serial.println("invalid card");
+        lcd.setCursor(0, 0); // Set the LCD cursor position
+        lcd.print("Unknown card");
+    }
+}
 
 /**
  * Helper routine to dump a byte array as hex values to Serial. 
