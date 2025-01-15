@@ -32,14 +32,15 @@
 
 #include <SPI.h>
 #include <MFRC522.h>
-#include <LiquidCrystal.h>
+//#include <Wire.h>
 
-#define SS_PIN 10
-#define RST_PIN 9
+
+#define SS_PIN D8
+#define RST_PIN D2
  
 MFRC522 rfid(SS_PIN, RST_PIN); // Instance of the class
-const int rs = 8, en = 7, d4 = 6, d5 = 4, d6 = 3, d7 = 2;
-LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
+//const int rs = 18, en = 17, d4 = 16, d5 = 14, d6 = 13, d7 = 12;
+//LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 
 // Init array that will store new NUID 
 byte nuidPICC[4];
@@ -57,10 +58,12 @@ void setup() {
   Serial.begin(9600);
   SPI.begin(); // Init SPI bus
   rfid.PCD_Init(); // Init MFRC522 
-lcd.begin(16, 2);
+//lcd.begin(16, 2);
   // Print a message to the LCD.
 //  lcd.print("hello, world!");
   Serial.println(F("This code scan the MIFARE Classsic NUID."));
+  //Wire.begin();
+  //Serial.println("\nI2C Scanner");
 }
  
 void loop() {
@@ -132,12 +135,12 @@ void compareByteArrays(byte *array1, byte *array2, size_t size) {
     // Print the result
     if (areIdentical) {
         Serial.println("The arrays are identical.");
-        lcd.setCursor(0, 0); // Set the LCD cursor position
-        lcd.print("Soerens card");
+        //lcd.setCursor(0, 0); // Set the LCD cursor position
+        //lcd.print("Soerens card");
     } else {
         Serial.println("invalid card");
-        lcd.setCursor(0, 0); // Set the LCD cursor position
-        lcd.print("Unknown card");
+        //lcd.setCursor(0, 0); // Set the LCD cursor position
+        //lcd.print("Unknown card");
     }
 }
 
@@ -148,14 +151,18 @@ void printHex(byte *buffer, byte bufferSize) {
   for (byte i = 0; i < bufferSize; i++) {
     Serial.print(buffer[i] < 0x10 ? " 0" : " ");
     Serial.print(buffer[i], HEX);
-    lcd.setCursor(0, 1); // Set the LCD cursor position
-    lcd.print("UID: ");
-  for (byte i = 0; i < 4; i++) {
-      if (nuidPICC[i] < 0x10) lcd.print("0"); // Add a leading zero for single-digit hex values
-        lcd.print(nuidPICC[i], HEX); // Print each byte in HEX
-      if (i < 3) lcd.print(""); // Add a colon between bytes, except the last
-      }
-  }
+    //lcd.setCursor(0, 1); // Set the LCD cursor position
+    //lcd.print("UID: ");
+ // for (byte i = 0; i < 4; i++) {
+  
+  //    if (nuidPICC[i] < 0x10) lcd.print("0"); // Add a leading zero for single-digit hex values
+        //lcd.print(nuidPICC[i], HEX); // Print each byte in HEX
+      //if (i < 3) lcd.print(""); // Add a colon between bytes, except the last
+      
+      
+      //}
+  
+ }
 
 
 }
