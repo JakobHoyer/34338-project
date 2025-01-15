@@ -1,0 +1,1625 @@
+[
+    {
+        "id": "ae162ba06c86eb91",
+        "type": "tab",
+        "label": "Control",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "fdcb03fd266d8483",
+        "type": "mqtt-broker",
+        "name": "MQTT broker",
+        "broker": "https://www.maqiatto.com/",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "94d140557d2380cc",
+        "type": "ui_base",
+        "theme": {
+            "name": "theme-light",
+            "lightTheme": {
+                "default": "#0094CE",
+                "baseColor": "#0094CE",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "edited": true,
+                "reset": false
+            },
+            "darkTheme": {
+                "default": "#097479",
+                "baseColor": "#097479",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "edited": false
+            },
+            "customTheme": {
+                "name": "Untitled Theme 1",
+                "default": "#4B7930",
+                "baseColor": "#4B7930",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+            },
+            "themeState": {
+                "base-color": {
+                    "default": "#0094CE",
+                    "value": "#0094CE",
+                    "edited": false
+                },
+                "page-titlebar-backgroundColor": {
+                    "value": "#0094CE",
+                    "edited": false
+                },
+                "page-backgroundColor": {
+                    "value": "#fafafa",
+                    "edited": false
+                },
+                "page-sidebar-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-textColor": {
+                    "value": "#1bbfff",
+                    "edited": false
+                },
+                "group-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "widget-textColor": {
+                    "value": "#111111",
+                    "edited": false
+                },
+                "widget-backgroundColor": {
+                    "value": "#0094ce",
+                    "edited": false
+                },
+                "widget-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "base-font": {
+                    "value": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+                }
+            },
+            "angularTheme": {
+                "primary": "indigo",
+                "accents": "blue",
+                "warn": "red",
+                "background": "grey",
+                "palette": "light"
+            }
+        },
+        "site": {
+            "name": "Node-RED Dashboard",
+            "hideToolbar": "true",
+            "allowSwipe": "false",
+            "lockMenu": "false",
+            "allowTempTheme": "true",
+            "dateFormat": "DD/MM/YYYY",
+            "sizes": {
+                "sx": 48,
+                "sy": 48,
+                "gx": 6,
+                "gy": 6,
+                "cx": 6,
+                "cy": 6,
+                "px": 0,
+                "py": 0
+            }
+        }
+    },
+    {
+        "id": "32b157254c0de2e3",
+        "type": "ui_tab",
+        "name": "Not logged in",
+        "icon": "dashboard",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "1b852277fa047030",
+        "type": "ui_group",
+        "name": "Group 1",
+        "tab": "32b157254c0de2e3",
+        "order": 1,
+        "disp": false,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "3ac112190e487516",
+        "type": "ui_tab",
+        "name": "Homescreen",
+        "icon": "dashboard",
+        "order": 2,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "4a1af5b4282046a2",
+        "type": "ui_group",
+        "name": "Group 1",
+        "tab": "3ac112190e487516",
+        "order": 1,
+        "disp": false,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "62dce26a8acb9cad",
+        "type": "ui_tab",
+        "name": "Status",
+        "icon": "dashboard",
+        "order": 3,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "c939db76022897bb",
+        "type": "ui_tab",
+        "name": "Settings",
+        "icon": "dashboard",
+        "order": 4,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "3d2b597466f13b94",
+        "type": "ui_tab",
+        "name": "Help",
+        "icon": "dashboard",
+        "order": 5,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "6fe893c9504f9afb",
+        "type": "ui_group",
+        "name": "Group 1",
+        "tab": "62dce26a8acb9cad",
+        "order": 1,
+        "disp": false,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "a842e552509d81cf",
+        "type": "ui_group",
+        "name": "Group 1",
+        "tab": "c939db76022897bb",
+        "order": 1,
+        "disp": false,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "f098bf7063da98c1",
+        "type": "ui_group",
+        "name": "Group 1",
+        "tab": "3d2b597466f13b94",
+        "order": 1,
+        "disp": false,
+        "width": 6,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "160e2c322ceb1732",
+        "type": "ui_tab",
+        "name": "Create user",
+        "icon": "dashboard",
+        "order": 6,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "8760a5fd5ea8e2bf",
+        "type": "ui_group",
+        "name": "Group 1",
+        "tab": "160e2c322ceb1732",
+        "order": 1,
+        "disp": false,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "a96669e00de68b31",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "127.0.0.1",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "430f265e7549a41f",
+        "type": "mqtt in",
+        "z": "ae162ba06c86eb91",
+        "name": "",
+        "topic": "s183668@student.dtu.dk/pub",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "fdcb03fd266d8483",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 140,
+        "y": 280,
+        "wires": [
+            [
+                "f4bbd4236257586d",
+                "c8f3d537e79fba73"
+            ]
+        ]
+    },
+    {
+        "id": "f4bbd4236257586d",
+        "type": "debug",
+        "z": "ae162ba06c86eb91",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 500,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "82523118b0d7913e",
+        "type": "ui_text",
+        "z": "ae162ba06c86eb91",
+        "group": "1b852277fa047030",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "",
+        "format": "Please check in with your chip",
+        "layout": "col-center",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 170,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "c03e28529abf0c51",
+        "type": "mqtt out",
+        "z": "ae162ba06c86eb91",
+        "name": "",
+        "topic": "s183668@student.dtu.dk/hub",
+        "qos": "2",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "fdcb03fd266d8483",
+        "x": 900,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "70cba7a06638f6f8",
+        "type": "inject",
+        "z": "ae162ba06c86eb91",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "abesnot",
+        "payloadType": "str",
+        "x": 190,
+        "y": 100,
+        "wires": [
+            [
+                "c03e28529abf0c51"
+            ]
+        ]
+    },
+    {
+        "id": "201c8e6ffdd12446",
+        "type": "function",
+        "z": "ae162ba06c86eb91",
+        "name": "Fake database",
+        "func": "\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "// Code added here will be run once\n// whenever the node is started.\nlet database = [\n    [\"Abbas\", 0], \n    [\"Anel\", \"A29F8A3F\"],\n    [\"Daniel\", 2],\n    [\"Jakob\", 3],\n    [\"Soren\", \"048C3E5A\"]\n    ];\nglobal.set(\"database\", database);",
+        "finalize": "",
+        "libs": [],
+        "x": 380,
+        "y": 40,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c8f3d537e79fba73",
+        "type": "function",
+        "z": "ae162ba06c86eb91",
+        "name": "Find user and preset",
+        "func": "\n// find bruger ud fra database. Check om den passer med\nlet database = global.get(\"database\");\nlet user = \"\";\nlet foundUser = false;\n\n\nfor (let i = 0; i < database.length; i++){\n    if (database[i][1] == msg.payload) {\n        user = database[i][0];\n        foundUser = true;\n        break;\n    }\n}\n\nif (foundUser == false) {\n    user = 'new user id ' + msg.payload;\n    database.push([user, msg.payload]);\n    global.set(\"database\", database);\n    msg.payload = user;\n    return [msg, null];\n} else {\n    // Found user, so display homescreen\n    msg.payload = user;\n    return [null, msg];\n}",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 540,
+        "y": 180,
+        "wires": [
+            [
+                "c03e28529abf0c51",
+                "c922c2f6018344b5",
+                "b1828ea16e98d084",
+                "4e1b312dd6d8e92b"
+            ],
+            [
+                "3490575e878f2cf7",
+                "c03e28529abf0c51",
+                "1b0207fcf5b4f192",
+                "f4bbd4236257586d",
+                "4e1b312dd6d8e92b"
+            ]
+        ]
+    },
+    {
+        "id": "974da0a3a2f4fd29",
+        "type": "inject",
+        "z": "ae162ba06c86eb91",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 200,
+        "y": 40,
+        "wires": [
+            [
+                "201c8e6ffdd12446"
+            ]
+        ]
+    },
+    {
+        "id": "3490575e878f2cf7",
+        "type": "ui_text",
+        "z": "ae162ba06c86eb91",
+        "group": "4a1af5b4282046a2",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Welcome",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 660,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "d90d6864c594a1ac",
+        "type": "ui_button",
+        "z": "ae162ba06c86eb91",
+        "name": "",
+        "group": "4a1af5b4282046a2",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Status",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 650,
+        "y": 460,
+        "wires": [
+            [
+                "9a2ea31a96750f75",
+                "c8e693f4e669f9e8"
+            ]
+        ]
+    },
+    {
+        "id": "56703c62cac29e0c",
+        "type": "ui_button",
+        "z": "ae162ba06c86eb91",
+        "name": "",
+        "group": "4a1af5b4282046a2",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Settings",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 660,
+        "y": 500,
+        "wires": [
+            [
+                "c7d1948c54696f23",
+                "c8e693f4e669f9e8"
+            ]
+        ]
+    },
+    {
+        "id": "07a77828440b5b57",
+        "type": "ui_button",
+        "z": "ae162ba06c86eb91",
+        "name": "",
+        "group": "4a1af5b4282046a2",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Help",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 650,
+        "y": 540,
+        "wires": [
+            [
+                "e8488c4c5bc0c1f4",
+                "c8e693f4e669f9e8"
+            ]
+        ]
+    },
+    {
+        "id": "9a2ea31a96750f75",
+        "type": "change",
+        "z": "ae162ba06c86eb91",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\"tab\":\"Status\"}",
+                "tot": "json"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 820,
+        "y": 460,
+        "wires": [
+            [
+                "28500315e473ec03"
+            ]
+        ]
+    },
+    {
+        "id": "c7d1948c54696f23",
+        "type": "change",
+        "z": "ae162ba06c86eb91",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\"tab\":\"Settings\"}",
+                "tot": "json"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 820,
+        "y": 500,
+        "wires": [
+            [
+                "2ef97be73d4498ed"
+            ]
+        ]
+    },
+    {
+        "id": "e8488c4c5bc0c1f4",
+        "type": "change",
+        "z": "ae162ba06c86eb91",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\"tab\":\"Help\"}",
+                "tot": "json"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 820,
+        "y": 540,
+        "wires": [
+            [
+                "afbb60203d515e7c"
+            ]
+        ]
+    },
+    {
+        "id": "02ab4afd98beeb76",
+        "type": "ui_text",
+        "z": "ae162ba06c86eb91",
+        "group": "a842e552509d81cf",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Settings",
+        "format": "",
+        "layout": "col-center",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 660,
+        "y": 660,
+        "wires": []
+    },
+    {
+        "id": "e5ada1434faed9ae",
+        "type": "ui_text",
+        "z": "ae162ba06c86eb91",
+        "group": "f098bf7063da98c1",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Help",
+        "format": "",
+        "layout": "col-center",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 1210,
+        "y": 660,
+        "wires": []
+    },
+    {
+        "id": "28500315e473ec03",
+        "type": "ui_ui_control",
+        "z": "ae162ba06c86eb91",
+        "name": "",
+        "events": "all",
+        "x": 1000,
+        "y": 460,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "2ef97be73d4498ed",
+        "type": "ui_ui_control",
+        "z": "ae162ba06c86eb91",
+        "name": "",
+        "events": "all",
+        "x": 1000,
+        "y": 500,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "afbb60203d515e7c",
+        "type": "ui_ui_control",
+        "z": "ae162ba06c86eb91",
+        "name": "",
+        "events": "all",
+        "x": 1000,
+        "y": 540,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "4e549c8ad4397368",
+        "type": "inject",
+        "z": "ae162ba06c86eb91",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "s183668@student.dtu.dk/pub",
+        "payload": "048C3E5A",
+        "payloadType": "str",
+        "x": 200,
+        "y": 180,
+        "wires": [
+            [
+                "c8f3d537e79fba73"
+            ]
+        ]
+    },
+    {
+        "id": "ebc8906bcd9d17d3",
+        "type": "change",
+        "z": "ae162ba06c86eb91",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\"tab\":\"Homescreen\"}",
+                "tot": "json"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 840,
+        "y": 700,
+        "wires": [
+            [
+                "2f866a0686a58e33"
+            ]
+        ]
+    },
+    {
+        "id": "4208078382b51890",
+        "type": "ui_button",
+        "z": "ae162ba06c86eb91",
+        "name": "",
+        "group": "a842e552509d81cf",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Go back",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 660,
+        "y": 700,
+        "wires": [
+            [
+                "ebc8906bcd9d17d3",
+                "632a8a87459fdf75"
+            ]
+        ]
+    },
+    {
+        "id": "2f866a0686a58e33",
+        "type": "ui_ui_control",
+        "z": "ae162ba06c86eb91",
+        "name": "",
+        "events": "all",
+        "x": 1020,
+        "y": 700,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "0a4fdc795f025a9b",
+        "type": "ui_ui_control",
+        "z": "ae162ba06c86eb91",
+        "name": "",
+        "events": "all",
+        "x": 1580,
+        "y": 700,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "76ef2d518212c8d7",
+        "type": "change",
+        "z": "ae162ba06c86eb91",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\"tab\":\"Homescreen\"}",
+                "tot": "json"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1400,
+        "y": 700,
+        "wires": [
+            [
+                "0a4fdc795f025a9b"
+            ]
+        ]
+    },
+    {
+        "id": "2b62289971d97be1",
+        "type": "ui_button",
+        "z": "ae162ba06c86eb91",
+        "name": "",
+        "group": "f098bf7063da98c1",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Go back",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 1220,
+        "y": 700,
+        "wires": [
+            [
+                "76ef2d518212c8d7",
+                "e4cb413eb12144db"
+            ]
+        ]
+    },
+    {
+        "id": "c922c2f6018344b5",
+        "type": "debug",
+        "z": "ae162ba06c86eb91",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 500,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "1b0207fcf5b4f192",
+        "type": "change",
+        "z": "ae162ba06c86eb91",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\"tab\":\"Homescreen\"}",
+                "tot": "json"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 860,
+        "y": 280,
+        "wires": [
+            [
+                "b5f488493eb9ae50"
+            ]
+        ]
+    },
+    {
+        "id": "b5f488493eb9ae50",
+        "type": "ui_ui_control",
+        "z": "ae162ba06c86eb91",
+        "name": "",
+        "events": "all",
+        "x": 1020,
+        "y": 280,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "b1828ea16e98d084",
+        "type": "change",
+        "z": "ae162ba06c86eb91",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\"tab\":\"Create user\"}",
+                "tot": "json"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 860,
+        "y": 180,
+        "wires": [
+            [
+                "c005700bc4efc902"
+            ]
+        ]
+    },
+    {
+        "id": "c005700bc4efc902",
+        "type": "ui_ui_control",
+        "z": "ae162ba06c86eb91",
+        "name": "",
+        "events": "all",
+        "x": 1020,
+        "y": 180,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e0af22ce1f19178c",
+        "type": "ui_text",
+        "z": "ae162ba06c86eb91",
+        "group": "8760a5fd5ea8e2bf",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Create new user",
+        "format": "",
+        "layout": "col-center",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 680,
+        "y": 840,
+        "wires": []
+    },
+    {
+        "id": "64f6b89310fc1066",
+        "type": "change",
+        "z": "ae162ba06c86eb91",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\"tab\":\"Not logged in\"}",
+                "tot": "json"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 840,
+        "y": 880,
+        "wires": [
+            [
+                "ba9752e294963fae"
+            ]
+        ]
+    },
+    {
+        "id": "af2e465dfbbf0a0c",
+        "type": "ui_button",
+        "z": "ae162ba06c86eb91",
+        "name": "",
+        "group": "8760a5fd5ea8e2bf",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Cancel",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 660,
+        "y": 880,
+        "wires": [
+            [
+                "64f6b89310fc1066",
+                "d76bd470725a61ae"
+            ]
+        ]
+    },
+    {
+        "id": "ba9752e294963fae",
+        "type": "ui_ui_control",
+        "z": "ae162ba06c86eb91",
+        "name": "",
+        "events": "all",
+        "x": 1020,
+        "y": 880,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "fb9b4cc1f3c99927",
+        "type": "ui_text",
+        "z": "ae162ba06c86eb91",
+        "group": "6fe893c9504f9afb",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Status",
+        "format": "",
+        "layout": "col-center",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 1210,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "156de75e0e19a241",
+        "type": "change",
+        "z": "ae162ba06c86eb91",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\"tab\":\"Homescreen\"}",
+                "tot": "json"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1400,
+        "y": 460,
+        "wires": [
+            [
+                "1c37758f66d58873"
+            ]
+        ]
+    },
+    {
+        "id": "0e7641d4702e2dd7",
+        "type": "ui_button",
+        "z": "ae162ba06c86eb91",
+        "name": "",
+        "group": "6fe893c9504f9afb",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Go back",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 1220,
+        "y": 460,
+        "wires": [
+            [
+                "156de75e0e19a241",
+                "55e96c261ae461fa"
+            ]
+        ]
+    },
+    {
+        "id": "1c37758f66d58873",
+        "type": "ui_ui_control",
+        "z": "ae162ba06c86eb91",
+        "name": "",
+        "events": "all",
+        "x": 1580,
+        "y": 460,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "fcd171e0c189c231",
+        "type": "ui_chart",
+        "z": "ae162ba06c86eb91",
+        "name": "",
+        "group": "6fe893c9504f9afb",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "label": "chart",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1210,
+        "y": 500,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "af888eb9a78cd670",
+        "type": "ui_text_input",
+        "z": "ae162ba06c86eb91",
+        "name": "",
+        "label": "",
+        "tooltip": "",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "mode": "text",
+        "delay": 300,
+        "topic": "topic",
+        "sendOnBlur": true,
+        "className": "",
+        "topicType": "msg",
+        "x": 660,
+        "y": 920,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "8427ee5ea8573318",
+        "type": "ui_button",
+        "z": "ae162ba06c86eb91",
+        "name": "",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "button",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 650,
+        "y": 960,
+        "wires": [
+            [
+                "d76bd470725a61ae"
+            ]
+        ]
+    },
+    {
+        "id": "728af7b8d158552e",
+        "type": "comment",
+        "z": "ae162ba06c86eb91",
+        "name": "",
+        "info": "Create user:\n    * Fix indtast navn\n    * Fix at den gemmer.\n\nStatus\n    * Lav grafer baseret på data.\n\nSettings\n    * Tillad at skifte ønsket interval.\n\nHelp\n    * Ikke vigtig, skriv lidt tekst til hvordan det virker",
+        "x": 720,
+        "y": 1080,
+        "wires": []
+    },
+    {
+        "id": "137438654b853d94",
+        "type": "change",
+        "z": "ae162ba06c86eb91",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\"tab\":\"Not logged in\"}",
+                "tot": "json"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 820,
+        "y": 580,
+        "wires": [
+            [
+                "48b5d2e1866a7ca6"
+            ]
+        ]
+    },
+    {
+        "id": "9d0e84c3b776c62f",
+        "type": "ui_button",
+        "z": "ae162ba06c86eb91",
+        "name": "",
+        "group": "4a1af5b4282046a2",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Log off",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 650,
+        "y": 580,
+        "wires": [
+            [
+                "137438654b853d94",
+                "c8e693f4e669f9e8"
+            ]
+        ]
+    },
+    {
+        "id": "48b5d2e1866a7ca6",
+        "type": "ui_ui_control",
+        "z": "ae162ba06c86eb91",
+        "name": "",
+        "events": "all",
+        "x": 1000,
+        "y": 580,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "272873f808303875",
+        "type": "inject",
+        "z": "ae162ba06c86eb91",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "s183668@student.dtu.dk/pub",
+        "payload": "N3WU53R",
+        "payloadType": "str",
+        "x": 200,
+        "y": 220,
+        "wires": [
+            [
+                "c8f3d537e79fba73"
+            ]
+        ]
+    },
+    {
+        "id": "2eb8a9bca42711d7",
+        "type": "change",
+        "z": "ae162ba06c86eb91",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\"tab\":\"Not logged in\"}",
+                "tot": "json"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 160,
+        "y": 740,
+        "wires": [
+            [
+                "2d9a22ebdab3ca2c"
+            ]
+        ]
+    },
+    {
+        "id": "2d9a22ebdab3ca2c",
+        "type": "ui_ui_control",
+        "z": "ae162ba06c86eb91",
+        "name": "",
+        "events": "all",
+        "x": 340,
+        "y": 740,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "6882afc21c22a825",
+        "type": "link in",
+        "z": "ae162ba06c86eb91",
+        "name": "link in 1",
+        "links": [
+            "c8e693f4e669f9e8",
+            "55e96c261ae461fa",
+            "632a8a87459fdf75",
+            "e4cb413eb12144db",
+            "d76bd470725a61ae",
+            "4e1b312dd6d8e92b"
+        ],
+        "x": 35,
+        "y": 700,
+        "wires": [
+            [
+                "5b84497c891ac78c",
+                "3a6f7d95380c79c6"
+            ]
+        ]
+    },
+    {
+        "id": "c8e693f4e669f9e8",
+        "type": "link out",
+        "z": "ae162ba06c86eb91",
+        "name": "link out 1",
+        "mode": "link",
+        "links": [
+            "6882afc21c22a825"
+        ],
+        "x": 795,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "55e96c261ae461fa",
+        "type": "link out",
+        "z": "ae162ba06c86eb91",
+        "name": "link out 2",
+        "mode": "link",
+        "links": [
+            "6882afc21c22a825"
+        ],
+        "x": 1335,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "632a8a87459fdf75",
+        "type": "link out",
+        "z": "ae162ba06c86eb91",
+        "name": "link out 3",
+        "mode": "link",
+        "links": [
+            "6882afc21c22a825"
+        ],
+        "x": 775,
+        "y": 660,
+        "wires": []
+    },
+    {
+        "id": "e4cb413eb12144db",
+        "type": "link out",
+        "z": "ae162ba06c86eb91",
+        "name": "link out 4",
+        "mode": "link",
+        "links": [
+            "6882afc21c22a825"
+        ],
+        "x": 1335,
+        "y": 660,
+        "wires": []
+    },
+    {
+        "id": "d76bd470725a61ae",
+        "type": "link out",
+        "z": "ae162ba06c86eb91",
+        "name": "link out 5",
+        "mode": "link",
+        "links": [
+            "6882afc21c22a825"
+        ],
+        "x": 805,
+        "y": 840,
+        "wires": []
+    },
+    {
+        "id": "4e1b312dd6d8e92b",
+        "type": "link out",
+        "z": "ae162ba06c86eb91",
+        "name": "link out 6",
+        "mode": "link",
+        "links": [
+            "6882afc21c22a825"
+        ],
+        "x": 795,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "ab1d4ed56c57a438",
+        "type": "delay",
+        "z": "ae162ba06c86eb91",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "5",
+        "timeoutUnits": "minutes",
+        "rate": "1",
+        "nbRateUnits": "10",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": true,
+        "allowrate": true,
+        "outputs": 1,
+        "x": 340,
+        "y": 700,
+        "wires": [
+            [
+                "2eb8a9bca42711d7"
+            ]
+        ]
+    },
+    {
+        "id": "5b84497c891ac78c",
+        "type": "change",
+        "z": "ae162ba06c86eb91",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "reset",
+                "pt": "msg",
+                "to": "true",
+                "tot": "bool"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 160,
+        "y": 700,
+        "wires": [
+            [
+                "ab1d4ed56c57a438"
+            ]
+        ]
+    },
+    {
+        "id": "3a6f7d95380c79c6",
+        "type": "delay",
+        "z": "ae162ba06c86eb91",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "10",
+        "timeoutUnits": "milliseconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 150,
+        "y": 660,
+        "wires": [
+            [
+                "ab1d4ed56c57a438"
+            ]
+        ]
+    },
+    {
+        "id": "4bfb7763dea78422",
+        "type": "comment",
+        "z": "ae162ba06c86eb91",
+        "name": "Inactivity system",
+        "info": "Log out the user, if the are inactive for 5 minutes",
+        "x": 160,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "ec3f2ed717a33411",
+        "type": "ui_text",
+        "z": "ae162ba06c86eb91",
+        "group": "f098bf7063da98c1",
+        "order": 2,
+        "width": "6",
+        "height": "12",
+        "name": "",
+        "label": "",
+        "format": "This project involves making a small smart home temperature regulation system. The system is based around a centralized hub, which has a RFID scanner, to let each individual in the home have their own ID chips, with which they can “check-in” into the home.   When doing so, the hub sends the ID of the user to the web server, which then sends out a user defined temperature profile for temperature sensing units around the house. The temperature sensing units have the job, to measure whether the room/house is within the user defined temperature profile, and if not this will be indicated on the sensor unit with LEDs and hopefully later on with actuation to get closer to the temperature desired. The sensing unit will also send up the measured temperature to the cloud, so it can be displayed on the web application.   The hub will be using MQTT with Maqiatto as MQTT broker, and node-red as the backend system and web application. ",
+        "layout": "col-center",
+        "className": "",
+        "style": true,
+        "font": "Arial,Arial,Helvetica,sans-serif",
+        "fontSize": "16",
+        "color": "#000000",
+        "x": 1210,
+        "y": 740,
+        "wires": []
+    }
+]
