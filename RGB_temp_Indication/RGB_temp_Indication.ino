@@ -24,7 +24,6 @@ float Temp = 0.0;
 void setup() {
   // Initialize Serial communication
   Serial.begin(115200);
-  Serial.println("Enter three values (0-255) separated by comma to control the RGB:");
 
   // Set pin modes
   pinMode(RedPin, OUTPUT);
@@ -43,12 +42,10 @@ float Temp_sens() {
   sensorValue = analogRead(TempPin);
   voltage = sensorValue * referenceVoltage / 1023.0;
   Temp = voltage / 0.01;
-  //return Temp;
-  //for
-  return 0;
+  return Temp;
 }
 
-void LED_Indication(current_temp) {
+void LED_Indication(float current_temp) {
   if (Serial.available() > 0) {
     // define current temp (to test we use serial monitor)
     float current_temp = Serial.parseFloat();
