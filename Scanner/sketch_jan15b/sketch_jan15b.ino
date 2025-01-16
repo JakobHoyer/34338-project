@@ -42,14 +42,14 @@
 #define RST_PIN D2
  
 MFRC522 rfid(SS_PIN, RST_PIN); // Instance of the class
-Servo myServo; // Create a Servo object to control the SG90
+
 
 // Init array that will store new NUID 
 byte nuidPICC[4];
 char hexString[9];
 
 // temperary variable to represent temperature sensor
-int sensorValue;
+
 
 // Søren preset
 byte preset1[4] = {0xA2, 0x9F, 0x8A, 0x3F};
@@ -95,10 +95,6 @@ void setup() {
   lcd.backlight();
   // Print a message to the LCD.
   Serial.println(F("This code scan the MIFARE Classsic NUID."));
-
-  myServo.attach(3); // Attach the servo to pin D3 
-  myServo.write(90); // Set the servo to the neutral position (90 degrees)
-
 
 
   setup_wifi(); // Kører WiFi loopet og forbinder herved.
@@ -359,14 +355,4 @@ void reconnect() {
 //
 //
 
-// function to control radiator with servo motor. takes input in form of a int from the temperature sensor from 0-1023 and outputs servo position
-void radiatorControl(){
-int angle = map(sensorValue, 0, 1023, 0, 180);
 
-  myServo.write(angle); // Set the servo to the mapped angle
-  delay(15); // Wait to let the servo reach the position
-
-  myServo.write(angle); // Set the servo to the mapped angle of the temperature sensor
-  delay(15); // Wait to let the servo reach the position
-
-}
