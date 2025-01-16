@@ -95,7 +95,7 @@ void setup() {
   lcd.backlight();
   // Print a message to the LCD.
   Serial.println(F("This code scan the MIFARE Classsic NUID."));
-
+  lcd.print("TEST");
 
   setup_wifi(); // Kører WiFi loopet og forbinder herved.
   client.setServer(mqtt_server, mqtt_port); // Forbinder til mqtt serveren (defineret længere oppe)
