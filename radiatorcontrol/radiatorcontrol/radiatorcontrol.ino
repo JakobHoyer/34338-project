@@ -12,6 +12,7 @@ Servo myServo;  // Create a Servo object
 
 int sensorPin = A0;   // select the input pin for the temperature sensor
 int sensorValue = 0;  // variable to store the value coming from the sensor
+int dataFromServer = 25;
 
 
 void setup() {
@@ -21,12 +22,12 @@ void setup() {
 }
 
 void loop() {
-  radiatorControl(sensorValue);
+  radiatorControl(sensorValue, dataFromServer);
 }
 
 
 
-void radiatorControl(int input) {
+void radiatorControl(int input, int desiredTemp) {
 
   float voltage;      // variable used to calculate the temperature
   float Temperature;  // variable to store the calculated temperature
@@ -35,10 +36,10 @@ void radiatorControl(int input) {
   voltage = input * 5.0 / 1023.0;  // calculating voltage
   Temperature = voltage * 100;     // calculating the temperature
 
-   if (Temperature < 25) { // if temperature is less than 25 degrees turn on 
+   if (Temperature < desiredTemp) { // if temperature is less than the desired temp turn on valve
       myServo.write(180);  // set servo to 180 degrees to indicate a valve turning on
     } 
-    else if (Temperature > 27) { // else if temperature is more than 27 degrees turn off valve
+    else if (Temperature > (desiredTemp+2)) { // else if temperature is more than two degrees over the desired temp turn off valve
       myServo.write(0);  // Set servo to 0 degrees to indicate a valve turning off
   }
   delay(1000);  // wait for 1 second between each reading
