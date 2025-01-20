@@ -8,9 +8,6 @@ const int BluePin = 5;
 //Important, use analog pin to read temperture.
 const int TempPin = A0;
 
-// Default prefered temperture
-int temp_pref_low = 21.0, temp_pref_high = 23.0;
-
 // The used MCU Nude, has max voltage of 3.3v, it doesnt matter, it is for the equation.
 const float referenceVoltage = 5.0;
 
@@ -21,6 +18,13 @@ int sensorValue = 0;
 float voltage = 0.0;
 float Temp = 0.0;
 
+//to account for nois, we use avarge temp reading.
+float Temp_Avg = 0;
+
+// Default prefered temperture
+int temp_pref_low = 21.0, temp_pref_high = 23.0;
+
+//////////// Start setup() ///////////
 void setup() {
   // Initialize Serial communication
   Serial.begin(115200);
@@ -29,26 +33,43 @@ void setup() {
   pinMode(RedPin, OUTPUT);
   pinMode(GreenPin, OUTPUT);
   pinMode(BluePin, OUTPUT);
-}
 
+  Temp_interval(25);
+}
+//////////// End setup() ///////////
+
+//////////// Start loop() ///////////
 void loop() {
-  temp_pref_low = 0;
-  temp_pref_high = 0;
   LED_Indication(Temp_sens());
 }
+//////////// End loop() ///////////
+
 
 float Temp_sens() {
-
+  Temp_Avg = 0;
+  for (int i = 0; i < 20; i++){
   sensorValue = analogRead(TempPin);
   voltage = sensorValue * referenceVoltage / 1023.0;
   Temp = voltage / 0.01;
+  Temp_Avg=Temp_Avg+Temp;
+  delay(100);
+  }
+  Temp = Temp_Avg/20;
+  Serial.println(Temp);
   return Temp;
+
+}
+
+//The desired temperture interval
+void Temp_interval(float temp_pref){
+  temp_pref_low = temp_pref-2;
+  temp_pref_high = temp_pref+2;
 }
 
 void LED_Indication(float current_temp) {
-  if (Serial.available() > 0) {
+  //if (Serial.available() > 0) {
     // define current temp (to test we use serial monitor)
-    float current_temp = Serial.parseFloat();
+    //float current_temp = Serial.parseFloat();
 
 
     // green when in prefered temp range
@@ -78,11 +99,10 @@ void LED_Indication(float current_temp) {
       //Intensity of green
       GreenIntensity = map(current_temp, temp_pref_high, temp_pref_high + 5, 100, 0);
       GreenIntensity = constrain(GreenIntensity, 0, 100);
-      Serial.print(GreenIntensity);
 
       analogWrite(RedPin, 255);
       analogWrite(GreenPin, GreenIntensity);
       analogWrite(BluePin, 0);
     }
-  }
+  //}
 }

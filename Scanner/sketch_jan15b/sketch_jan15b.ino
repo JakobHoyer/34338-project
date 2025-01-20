@@ -36,106 +36,107 @@
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
 #include <ESP8266HTTPClient.h>
-#include <Servo.h> // Include the Servo librar
+#include <Servo.h>  // Include the Servo librar
 
 #define SS_PIN D8
-#define RST_PIN D2
- 
-MFRC522 rfid(SS_PIN, RST_PIN); // Instance of the class
+#define RST_PIN D3
+//#define buttonPin D2
+
+MFRC522 rfid(SS_PIN, RST_PIN);  // Instance of the class
 
 
-// Init array that will store new NUID 
+// Init array that will store new NUID
 byte nuidPICC[4];
 char hexString[9];
 
-// temperary variable to represent temperature sensor
-
+// variable for button
+const int buttonPin = D1;
 
 // Søren preset
-byte preset1[4] = {0xA2, 0x9F, 0x8A, 0x3F};
+byte preset1[4] = { 0xA2, 0x9F, 0x8A, 0x3F };
 
 int lcdColumns = 16;
 int lcdRows = 2;
 
-LiquidCrystal_I2C lcd(0x27, lcdColumns, lcdRows);  
+LiquidCrystal_I2C lcd(0x27, lcdColumns, lcdRows);
 
 // Definerer id og password til netværksforbindelse som NodeMCU anvender
-const char* ssid = "Jakob - iPhone"; //Indsæt navnet på jeres netværk her
-const char* password = "kodekodeadad"; //Indsæt password her
+const char* ssid = "Jakob - iPhone";    
+const char* password = "kodekodeadad";
 
 // Definerer information til mqtt serveren
-const char *mqtt_server = "maqiatto.com"; //navn på mqtt-server. Find navnet på cloudmqtt-hjemmesiden
-const int mqtt_port = 1883; // Definerer porten
-const char *mqtt_user = "s183668@student.dtu.dk"; // Definerer mqtt-brugeren
-const char *mqtt_pass = "kodekodeadad"; // Definerer koden til mqtt-brugeren
+const char *mqtt_server = "maqiatto.com";          //navn på mqtt-server. Find navnet på cloudmqtt-hjemmesiden
+const int mqtt_port = 1883;                        // Definerer porten
+const char *mqtt_user = "s183668@student.dtu.dk";  // Definerer mqtt-brugeren
+const char *mqtt_pass = "kodekodeadad";            // Definerer koden til mqtt-brugeren
 const char *mqtt_topic = "s183668@student.dtu.dk/hub";
 //
 
-String payload; // Definerer variablen 'payload' i det globale scope (payload er navnet på besked-variablen)
+String payload;  // Definerer variablen 'payload' i det globale scope (payload er navnet på besked-variablen)
 
 
 
 // Opretter en placeholder for callback-funktionen til brug senere. Den rigtige funktion ses længere nede.
-void callback(char* byteArraytopic, byte* byteArrayPayload, unsigned int length);
+void callback(char *byteArraytopic, byte *byteArrayPayload, unsigned int length);
 
 // Opretter en klient der kan forbinde til en specifik internet IP adresse.
-WiFiClient espClient; // Initialiserer wifi bibloteket ESP8266Wifi, som er inkluderet under "nødvendige bibloteker"
+WiFiClient espClient;  // Initialiserer wifi bibloteket ESP8266Wifi, som er inkluderet under "nødvendige bibloteker"
 
 // Opretter forbindelse til mqtt klienten:
-PubSubClient client(mqtt_server, mqtt_port, callback, espClient); // Initialiserer bibloteket for at kunne modtage og sende beskeder til mqtt. Den henter fra definerede mqtt server og port. Den henter fra topic og beskeden payload
+PubSubClient client(mqtt_server, mqtt_port, callback, espClient);  // Initialiserer bibloteket for at kunne modtage og sende beskeder til mqtt. Den henter fra definerede mqtt server og port. Den henter fra topic og beskeden payload
 
 
 
 
-void setup() { 
+void setup() {
+  pinMode(buttonPin, INPUT_PULLUP);
   Serial.begin(9600);
-  SPI.begin(); // Init SPI bus
-  rfid.PCD_Init(); // Init MFRC522 
+  SPI.begin();      // Init SPI bus
+  rfid.PCD_Init();  // Init MFRC522
   lcd.init();
   lcd.backlight();
   // Print a message to the LCD.
   Serial.println(F("This code scan the MIFARE Classsic NUID."));
   lcd.print("TEST");
 
-  setup_wifi(); // Kører WiFi loopet og forbinder herved.
-  client.setServer(mqtt_server, mqtt_port); // Forbinder til mqtt serveren (defineret længere oppe)
-  client.setCallback(callback); // Ingangsætter den definerede callback funktion hver gang der er en ny besked på den subscribede "cmd"- topic
-
+  setup_wifi();                              // Kører WiFi loopet og forbinder herved.
+  client.setServer(mqtt_server, mqtt_port);  // Forbinder til mqtt serveren (defineret længere oppe)
+  client.setCallback(callback);              // Ingangsætter den definerede callback funktion hver gang der er en ny besked på den subscribede "cmd"- topic
 }
- 
+
 void loop() {
 
-////// LOOP /////////
+  ////// LOOP /////////
 
-
+if(checkButtonState(buttonPin)){
+  delay(50);
 
   // Hvis der opstår problemer med forbindelsen til mqtt broker oprettes forbindelse igen ved at køre client loop
   if (!client.connected()) {
     reconnect();
   }
   client.loop();
-   for (int i = 0; i < 4; i++) {
+  
+  for (int i = 0; i < 4; i++) {
     sprintf(&hexString[i * 2], "%02X", nuidPICC[i]);
   }
 
- // Reset the loop if no new card present on the sensor/reader. This saves the entire process when idle.
-  if ( ! rfid.PICC_IsNewCardPresent())
-    return;
+  // Reset the loop if no new card present on the sensor/reader. This saves the entire process when idle.
+  if (!rfid.PICC_IsNewCardPresent())
+  return;
 
   // Verify if the NUID has been readed
-  if ( ! rfid.PICC_ReadCardSerial())
+  if (!rfid.PICC_ReadCardSerial())
     return;
 
   client.publish("s183668@student.dtu.dk/pub", hexString);
-  hexString[8]='\0';
- 
-  delay(1000);
+  hexString[8] = '\0';
 
-//////// Loop slut ////////
+  delay(100);
 
 
-    lcd.setCursor(0, 0); // Set the LCD cursor position
-    lcd.print("Soerens card");
+  lcd.setCursor(0, 0);  // Set the LCD cursor position
+  lcd.print("Soerens card");
 
 
 
@@ -144,24 +145,19 @@ void loop() {
   Serial.println(rfid.PICC_GetTypeName(piccType));
 
   // Check is the PICC of Classic MIFARE type
-  if (piccType != MFRC522::PICC_TYPE_MIFARE_MINI &&  
-    piccType != MFRC522::PICC_TYPE_MIFARE_1K &&
-    piccType != MFRC522::PICC_TYPE_MIFARE_4K) {
+  if (piccType != MFRC522::PICC_TYPE_MIFARE_MINI && piccType != MFRC522::PICC_TYPE_MIFARE_1K && piccType != MFRC522::PICC_TYPE_MIFARE_4K) {
     Serial.println(F("Your tag is not of type MIFARE Classic."));
     return;
   }
 
-  if (rfid.uid.uidByte[0] != nuidPICC[0] || 
-    rfid.uid.uidByte[1] != nuidPICC[1] || 
-    rfid.uid.uidByte[2] != nuidPICC[2] || 
-    rfid.uid.uidByte[3] != nuidPICC[3] ) {
+  if (rfid.uid.uidByte[0] != nuidPICC[0] || rfid.uid.uidByte[1] != nuidPICC[1] || rfid.uid.uidByte[2] != nuidPICC[2] || rfid.uid.uidByte[3] != nuidPICC[3]) {
     Serial.println(F("A new card has been detected."));
 
     // Store NUID into nuidPICC array
     for (byte i = 0; i < 4; i++) {
       nuidPICC[i] = rfid.uid.uidByte[i];
     }
-   
+
     Serial.println(F("The NUID tag is:"));
     Serial.print(F("In hex: "));
     printHex(rfid.uid.uidByte, rfid.uid.size);
@@ -169,8 +165,7 @@ void loop() {
     Serial.print(F("In dec: "));
     printDec(rfid.uid.uidByte, rfid.uid.size);
     Serial.println();
-  }
-  else Serial.println(F("Card read previously."));
+  } else Serial.println(F("Card read previously."));
 
   // Halt PICC
   rfid.PICC_HaltA();
@@ -178,34 +173,35 @@ void loop() {
   // Stop encryption on PCD
   rfid.PCD_StopCrypto1();
 
-compareByteArrays(nuidPICC, preset1, 4);
-
-
-
-
+  compareByteArrays(nuidPICC, preset1, 4);
+  }
+  else 
+  {
+    Serial.println("loool");
+  }
 }
 
 
 void compareByteArrays(byte *array1, byte *array2, size_t size) {
-    bool areIdentical = true; // Flag to track if arrays are identical
+  bool areIdentical = true;  // Flag to track if arrays are identical
 
-    for (size_t i = 0; i < size; i++) {
-        if (array1[i] != array2[i]) {
-            areIdentical = false; // Set flag to false if a mismatch is found
-            break;
-        }
-    } 
-
-    // Print the result
-    if (areIdentical) {
-        Serial.println("The arrays are identical.");
-        lcd.setCursor(0, 0); // Set the LCD cursor position
-        lcd.print("Soerens card");
-    } else {
-        Serial.println("invalid card");
-        lcd.setCursor(0, 0); // Set the LCD cursor position
-        lcd.print("Unknown card");
+  for (size_t i = 0; i < size; i++) {
+    if (array1[i] != array2[i]) {
+      areIdentical = false;  // Set flag to false if a mismatch is found
+      break;
     }
+  }
+
+  // Print the result
+  if (areIdentical) {
+    Serial.println("The arrays are identical.");
+    lcd.setCursor(0, 0);  // Set the LCD cursor position
+    lcd.print("Soerens card");
+  } else {
+    Serial.println("invalid card");
+    lcd.setCursor(0, 0);  // Set the LCD cursor position
+    lcd.print("Unknown card");
+  }
 }
 
 /**
@@ -215,20 +211,15 @@ void printHex(byte *buffer, byte bufferSize) {
   for (byte i = 0; i < bufferSize; i++) {
     Serial.print(buffer[i] < 0x10 ? " 0" : " ");
     Serial.print(buffer[i], HEX);
-    lcd.setCursor(0, 1); // Set the LCD cursor position
+    lcd.setCursor(0, 1);  // Set the LCD cursor position
     lcd.print("UID: ");
- for (byte i = 0; i < 4; i++) {
-  
-      if (nuidPICC[i] < 0x10) lcd.print("0"); // Add a leading zero for single-digit hex values
-        lcd.print(nuidPICC[i], HEX); // Print each byte in HEX
-      if (i < 3) lcd.print(""); // Add a colon between bytes, except the last
-      
-      
-      }
-  
- }
+    for (byte i = 0; i < 4; i++) {
 
-
+      if (nuidPICC[i] < 0x10) lcd.print("0");  // Add a leading zero for single-digit hex values
+      lcd.print(nuidPICC[i], HEX);             // Print each byte in HEX
+      if (i < 3) lcd.print("");                // Add a colon between bytes, except the last
+    }
+  }
 }
 
 
@@ -240,15 +231,13 @@ void printDec(byte *buffer, byte bufferSize) {
     Serial.print(' ');
     Serial.print(buffer[i], DEC);
     // ');
-   // lcd.print(buffer[i], DEC);
-
-
+    // lcd.print(buffer[i], DEC);
   }
 }
 
 // Definerer callback funktionen der modtager beskeder fra mqtt
 // OBS: den her funktion kører hver gang MCU'en modtager en besked via mqtt
-void callback(char* byteArraytopic, byte* byteArrayPayload, unsigned int length) {
+void callback(char *byteArraytopic, byte *byteArrayPayload, unsigned int length) {
 
   // Konverterer indkomne besked (topic) til en string:
   String topic;
@@ -258,8 +247,8 @@ void callback(char* byteArraytopic, byte* byteArrayPayload, unsigned int length)
   Serial.println("] ");
   // Konverterer den indkomne besked (payload) fra en array til en string:
   // Topic == Temperaturmaaler, Topic == Kraftsensor
-  if (topic == mqtt_topic) { // OBS: der subscribes til et topic nede i reconnect-funktionen. I det her tilfælde er der subscribed til "Test". Man kan subscribe til alle topics ved at bruge "#"
-    payload = ""; // Nulstil payload variablen så forloopet ikke appender til en allerede eksisterende payload
+  if (topic == mqtt_topic) {  // OBS: der subscribes til et topic nede i reconnect-funktionen. I det her tilfælde er der subscribed til "Test". Man kan subscribe til alle topics ved at bruge "#"
+    payload = "";             // Nulstil payload variablen så forloopet ikke appender til en allerede eksisterende payload
     for (int i = 0; i < length; i++) {
       payload += (char)byteArrayPayload[i];
       // For-loop: tag hvert tegn i hele længden af den inkomne besked, og konverter denne til en char. Append tegnene 1 efter 1:
@@ -272,7 +261,7 @@ void callback(char* byteArraytopic, byte* byteArrayPayload, unsigned int length)
 
       if (payload == "LED") {
         // Definerer funktion som bruges til at styre temperaturmåling
-        
+
         delay(1000);
         client.publish(mqtt_topic, "LED er taendt");
       }
@@ -280,7 +269,6 @@ void callback(char* byteArraytopic, byte* byteArrayPayload, unsigned int length)
     Serial.println(payload);
     //client.publish("mqtt", String(payload).c_str()); // Publish besked fra MCU til et valgt topic. Husk at subscribe til topic'et i NodeRed.
   }
-
 }
 
 ///////// CALLBACK SLUT /////////
@@ -320,7 +308,7 @@ void reconnect() {
   while (!client.connected()) {
     Serial.print("Forsøger at oprette MQTT forbindelse...");
 
-    if (client.connect("GroupNamexMCU", mqtt_user, mqtt_pass)) { // Forbinder til klient med mqtt bruger og password
+    if (client.connect("GroupNamexMCU", mqtt_user, mqtt_pass)) {  // Forbinder til klient med mqtt bruger og password
       Serial.println("connected");
       // Derudover subsribes til topic "Test" hvor NodeMCU modtager payload beskeder fra
       client.subscribe(mqtt_topic);
@@ -340,19 +328,18 @@ void reconnect() {
   }
 }
 
-///////// OPSÆTNING AF WIFI SLUT /////////
-
-//
-//
-//
-//
-//
-//'
-//
-//
-//
-//
-//
-//
-
-
+bool checkButtonState(int buttonPin) {
+  static bool buttonState = false;     // Current toggle state (true/false)
+  static bool lastButtonPressed = false; // Tracks if the button was previously pressed
+  
+  bool currentButtonPressed = digitalRead(buttonPin) == LOW; // Read current button state
+  
+  // Detect a rising edge: button goes from unpressed to pressed
+  if (currentButtonPressed && !lastButtonPressed) {
+    buttonState = !buttonState; // Toggle the state
+  }
+  
+  lastButtonPressed = currentButtonPressed; // Update the last button state
+  
+  return buttonState; // Return the new button state
+}
