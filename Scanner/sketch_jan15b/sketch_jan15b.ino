@@ -26,7 +26,6 @@
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
 #include <ESP8266HTTPClient.h>
-#include <Servo.h>  // Include the Servo librar
 
 #define SS_PIN D8
 #define RST_PIN D3
@@ -40,7 +39,7 @@ byte nuidPICC[4];
 char hexString[9];
 
 // variable for button
-const int buttonPin = D1;
+//const int buttonPin = D1;
 
 // Søren preset
 byte preset1[4] = { 0xA2, 0x9F, 0x8A, 0x3F };
@@ -79,7 +78,7 @@ PubSubClient client(mqtt_server, mqtt_port, callback, espClient);  // Initialise
 
 
 void setup() {
-  pinMode(buttonPin, INPUT_PULLUP);
+  //pinMode(buttonPin, INPUT_PULLUP);
   Serial.begin(9600);
   SPI.begin();      // Init SPI bus
   rfid.PCD_Init();  // Init MFRC522
@@ -87,7 +86,26 @@ void setup() {
   lcd.backlight();
   // Print a message to the LCD.
   Serial.println(F("This code scan the MIFARE Classsic NUID."));
-  lcd.print("TEST");
+  Wire.begin(D4, D1); // SDA=D4 (GPIO2), SCL=D1 (GPIO5)
+
+lcd.setCursor(0, 1);
+  lcd.print("                         ");
+
+  lcd.backlight();   // Turn on backlight
+
+  lcd.setCursor(0, 1);
+  lcd.print("D11");
+
+  lcd.setCursor(4, 1);
+  lcd.print("D21");
+
+ lcd.setCursor(8, 1);
+  lcd.print("D31");
+
+ lcd.setCursor(12, 1);
+  lcd.print("D41");
+
+
 
   setup_wifi();                              // Kører WiFi loopet og forbinder herved.
   client.setServer(mqtt_server, mqtt_port);  // Forbinder til mqtt serveren (defineret længere oppe)
@@ -98,8 +116,8 @@ void loop() {
 
   ////// LOOP /////////
 
-if(checkButtonState(buttonPin)){
-  delay(50);
+//if(checkButtonState(buttonPin)){
+ // delay(50);
 
   // Hvis der opstår problemer med forbindelsen til mqtt broker oprettes forbindelse igen ved at køre client loop
   if (!client.connected()) {
@@ -165,11 +183,11 @@ if(checkButtonState(buttonPin)){
 
   compareByteArrays(nuidPICC, preset1, 4);
   }
-  else 
-  {
-    Serial.println("loool");
-  }
-}
+  //else 
+  //{
+  //  Serial.println("loool");
+  //}
+//}
 
 
 void compareByteArrays(byte *array1, byte *array2, size_t size) {
@@ -201,14 +219,14 @@ void printHex(byte *buffer, byte bufferSize) {
   for (byte i = 0; i < bufferSize; i++) {
     Serial.print(buffer[i] < 0x10 ? " 0" : " ");
     Serial.print(buffer[i], HEX);
-    lcd.setCursor(0, 1);  // Set the LCD cursor position
-    lcd.print("UID: ");
-    for (byte i = 0; i < 4; i++) {
+    //lcd.setCursor(0, 1);  // Set the LCD cursor position
+    //lcd.print("UID: ");
+    //for (byte i = 0; i < 4; i++) {
 
-      if (nuidPICC[i] < 0x10) lcd.print("0");  // Add a leading zero for single-digit hex values
-      lcd.print(nuidPICC[i], HEX);             // Print each byte in HEX
-      if (i < 3) lcd.print("");                // Add a colon between bytes, except the last
-    }
+    //  if (nuidPICC[i] < 0x10) lcd.print("0");  // Add a leading zero for single-digit hex values
+   //   lcd.print(nuidPICC[i], HEX);             // Print each byte in HEX
+    //  if (i < 3) lcd.print("");                // Add a colon between bytes, except the last
+    //}
   }
 }
 
