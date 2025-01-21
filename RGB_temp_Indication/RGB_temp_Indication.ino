@@ -34,7 +34,7 @@ void setup() {
   pinMode(GreenPin, OUTPUT);
   pinMode(BluePin, OUTPUT);
 
-  Temp_interval(25);
+  Temp_interval(31);
 }
 //////////// End setup() ///////////
 
@@ -47,62 +47,61 @@ void loop() {
 
 float Temp_sens() {
   Temp_Avg = 0;
-  for (int i = 0; i < 20; i++){
-  sensorValue = analogRead(TempPin);
-  voltage = sensorValue * referenceVoltage / 1023.0;
-  Temp = voltage / 0.01;
-  Temp_Avg=Temp_Avg+Temp;
-  delay(100);
+  for (int i = 0; i < 20; i++) {
+    sensorValue = analogRead(TempPin);
+    voltage = sensorValue * referenceVoltage / 1023.0;
+    Temp = voltage / 0.01;
+    Temp_Avg = Temp_Avg + Temp;
+    delay(100);
   }
-  Temp = Temp_Avg/20;
+  Temp = Temp_Avg / 20;
   Serial.println(Temp);
   return Temp;
-
 }
 
 //The desired temperture interval
-void Temp_interval(float temp_pref){
-  temp_pref_low = temp_pref-2;
-  temp_pref_high = temp_pref+2;
+void Temp_interval(float temp_pref) {
+  temp_pref_low = temp_pref - 2;
+  temp_pref_high = temp_pref + 2;
 }
 
 void LED_Indication(float current_temp) {
   //if (Serial.available() > 0) {
-    // define current temp (to test we use serial monitor)
-    //float current_temp = Serial.parseFloat();
+  // define current temp (to test we use serial monitor)
+  //float current_temp = Serial.parseFloat();
 
 
-    // green when in prefered temp range
-    if (current_temp >= temp_pref_low && current_temp <= temp_pref_high) {
-      analogWrite(RedPin, 0);
-      analogWrite(GreenPin, 255);
-      analogWrite(BluePin, 0);
-    }
+  // green when in prefered temp range
+  if (current_temp >= temp_pref_low && current_temp <= temp_pref_high) {
+    analogWrite(RedPin, 0);
+    analogWrite(GreenPin, 255);
+    analogWrite(BluePin, 0);
+  }
 
-    // when lower than prefered (mix of green and blue when between -5 and lower preference)
-    else if (current_temp < temp_pref_low) {
-      // Intensity of blue
-      BlueIntensity = map(current_temp, temp_pref_low - 5, temp_pref_low, 255, 0);
-      BlueIntensity = constrain(BlueIntensity, 0, 255);
+  // when lower than prefered (mix of green and blue when between -5 and lower preference)
+  else if (current_temp < temp_pref_low) {
+    // Intensity of blue
+    BlueIntensity = map(current_temp, temp_pref_low - 5, temp_pref_low, 255, 0);
+    BlueIntensity = constrain(BlueIntensity, 0, 255);
 
-      //Intensisty of green
-      GreenIntensity = map(current_temp, temp_pref_low, temp_pref_low - 5, 255, 0);
-      GreenIntensity = constrain(GreenIntensity, 0, 255);
+    //Intensisty of green
+    GreenIntensity = map(current_temp, temp_pref_low, temp_pref_low - 5, 255, 0);
+    GreenIntensity = constrain(GreenIntensity, 0, 255);
 
-      analogWrite(RedPin, 0);
-      analogWrite(GreenPin, GreenIntensity);
-      analogWrite(BluePin, BlueIntensity);
-    }
+    analogWrite(RedPin, 0);
+    analogWrite(GreenPin, GreenIntensity);
+    analogWrite(BluePin, BlueIntensity);
+  }
 
-    // When higer than prefered orange when between +5 and upper preference
-    else {
-      //Intensity of green
-      GreenIntensity = map(current_temp, temp_pref_high, temp_pref_high + 5, 100, 0);
-      GreenIntensity = constrain(GreenIntensity, 0, 100);
+  // When higer than prefered orange when between +5 and upper preference
+  else {
+    //Intensity of green
+    GreenIntensity = map(current_temp, temp_pref_high, temp_pref_high + 5, 100, 0);
+    GreenIntensity = constrain(GreenIntensity, 0, 100);
 
-      analogWrite(RedPin, 255);
-      analogWrite(GreenPin, GreenIntensity);
-      analogWrite(BluePin, 0);
-    }
+    analogWrite(RedPin, 255);
+    analogWrite(GreenPin, GreenIntensity);
+    analogWrite(BluePin, 0);
+  }
   //}
 }

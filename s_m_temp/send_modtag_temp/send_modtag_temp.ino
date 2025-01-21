@@ -5,11 +5,13 @@
 #include <PubSubClient.h>
 #include <ESP8266HTTPClient.h>
 #include <DHT.h>
-
+#include <Servo.h>
 #define DHT_PIN D2
 #define DHT_TYPE DHT11
 
 DHT dht(DHT_PIN, DHT_TYPE);
+
+Servo myServo;
 
 // Definerer id og password til netværksforbindelse som NodeMCU anvender
 const char* ssid = "Jakob - iPhone";    //Indsæt navnet på jeres netværk her
@@ -98,7 +100,7 @@ void callback(char* byteArraytopic, byte* byteArrayPayload, unsigned int length)
   // Konverterer den indkomne besked (payload) fra en array til en string:
   // Topic == Temperaturmaaler, Topic == Kraftsensor
   if (topic == mqtt_topic_temp) {  // OBS: der subscribes til et topic nede i reconnect-funktionen. I det her tilfælde er der subscribed til "Test". Man kan subscribe til alle topics ved at bruge "#"
-    payload = "";             // Nulstil payload variablen så forloopet ikke appender til en allerede eksisterende payload
+    payload = "";                  // Nulstil payload variablen så forloopet ikke appender til en allerede eksisterende payload
     for (int i = 0; i < length; i++) {
       payload += (char)byteArrayPayload[i];
     }
@@ -114,10 +116,10 @@ void callback(char* byteArraytopic, byte* byteArrayPayload, unsigned int length)
 
     //Serial.println(payload);
     //client.publish("mqtt", String(payload).c_str()); // Publish besked fra MCU til et valgt topic. Husk at subscribe til topic'et i NodeRed.
-  } 
-  
+  }
+
   else if (topic == mqtt_topic_hum) {
-    payload = "";             // Nulstil payload variablen så forloopet ikke appender til en allerede eksisterende payload
+    payload = "";  // Nulstil payload variablen så forloopet ikke appender til en allerede eksisterende payload
     for (int i = 0; i < length; i++) {
       payload += (char)byteArrayPayload[i];
     }
@@ -220,8 +222,8 @@ void setup() {
   pinMode(BluePin, OUTPUT);
 
   Serial.println("ESP8266 ADC Receiver Started...");
-  pinMode(D1,OUTPUT);
-  pinMode(D4,OUTPUT);
+  pinMode(D1, OUTPUT);
+  pinMode(D4, OUTPUT);
 
   setup_wifi();                              // Kører WiFi loopet og forbinder herved.
   client.setServer(mqtt_server, mqtt_port);  // Forbinder til mqtt serveren (defineret længere oppe)
@@ -234,7 +236,8 @@ void setup() {
   Serial.println(humidity);
   //delay(1000);
 
-  
+  myServo.attach(3);  // Attach the servo to pin D3
+  myServo.write(0);   // Set the servo to the starting position (0 degrees)
 }
 //////// SETUP SLUT ////////
 
@@ -255,8 +258,8 @@ void loop() {
   }
   client.loop();
   float temp = Temp_sens();
-  String tempStr = String(temp, 2);       // Konverter float til string
-  
+  String tempStr = String(temp, 2);  // Konverter float til string
+
   client.publish("s183668@student.dtu.dk/SensorToCloudTemp", tempStr.c_str());  // Konverter til C-streng
 
 
@@ -266,27 +269,20 @@ void loop() {
     return;
   }
   String humidityStr = String(humidity, 2);
-  
+
   client.publish("s183668@student.dtu.dk/SensorToCloudHum", humidityStr.c_str());
   Serial.print("Humidity: ");
   Serial.println(humidity);
 
+  radiatorControl(temp)
+
   //fane kode
-  digitalWrite(D1, HIGH);
-  delay(1000);
-  digitalWrite(D1, LOW);
-  delay(1000);
-
-  if(temp >= temp_pref_high){
+  if (temp >= temp_pref_high) {
     fanturnon();
+    }
+  else {
+    digitalWrite(D1, LOW);
   }
-  else if(temp <= temp_pref_low){
-    radiatorturnon();
-  }
-  else{
-    neutral();
-  }
-
 }
 
 //////// Loop slut ////////
@@ -349,15 +345,15 @@ void LED_Indication(float current_temp) {
   }
 }
 
-void fanturnon(){
-digitalWrite(D1,HIGH);
+void fanturnon() {
+  digitalWrite(D1, HIGH);
 }
 
-void radiatorturnon(){
-  digitalWrite(D4, HIGH);
-}
-
-void neutral(){
-   digitalWrite(D1, LOW);
-   digitalWrite(D4, LOW);
+void radiatorControl(float Temperature) {
+   if (Temperature < temp_pref_low) { // if temperature is less than the desired temp turn on valve
+      myServo.write(180);  // set servo to 180 degrees to indicate a valve turning on
+    } 
+    else if (Temperature > temp_pref_high) { // else if temperature is more than two degrees over the desired temp turn off valve
+      myServo.write(0);  // Set servo to 0 degrees to indicate a valve turning off
+  }
 }
