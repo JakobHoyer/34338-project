@@ -209,7 +209,7 @@
         "tab": "62dce26a8acb9cad",
         "order": 1,
         "disp": false,
-        "width": "6",
+        "width": 12,
         "collapse": false,
         "className": ""
     },
@@ -287,16 +287,6 @@
         "sessionExpiry": ""
     },
     {
-        "id": "fee342c0ef712b9d",
-        "type": "ui_spacer",
-        "z": "ae162ba06c86eb91",
-        "name": "spacer",
-        "group": "a842e552509d81cf",
-        "order": 4,
-        "width": 6,
-        "height": 1
-    },
-    {
         "id": "23ca3c0bbb433621",
         "type": "ui_spacer",
         "z": "ae162ba06c86eb91",
@@ -313,6 +303,46 @@
         "name": "spacer",
         "group": "8760a5fd5ea8e2bf",
         "order": 6,
+        "width": 6,
+        "height": 1
+    },
+    {
+        "id": "6b4dd99c7545cf98",
+        "type": "ui_spacer",
+        "z": "ae162ba06c86eb91",
+        "name": "spacer",
+        "group": "6fe893c9504f9afb",
+        "order": 10,
+        "width": 12,
+        "height": 1
+    },
+    {
+        "id": "0e69ae643c75a29f",
+        "type": "ui_spacer",
+        "z": "ae162ba06c86eb91",
+        "name": "spacer",
+        "group": "a842e552509d81cf",
+        "order": 2,
+        "width": 6,
+        "height": 1
+    },
+    {
+        "id": "630c3250c16ae648",
+        "type": "ui_spacer",
+        "z": "ae162ba06c86eb91",
+        "name": "spacer",
+        "group": "a842e552509d81cf",
+        "order": 5,
+        "width": 6,
+        "height": 1
+    },
+    {
+        "id": "7c39cb13aa8b21da",
+        "type": "ui_spacer",
+        "z": "ae162ba06c86eb91",
+        "name": "spacer",
+        "group": "a842e552509d81cf",
+        "order": 8,
         "width": 6,
         "height": 1
     },
@@ -431,7 +461,7 @@
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
-        "initialize": "// Code added here will be run once\n// whenever the node is started.\nlet username = \"\";\nlet desiredTemp = 23;\nlet database = [\n    [\"Abbas\", 0, 23, 0], \n    [\"Anel\", \"A29F8A3F\", 23, 0],\n    [\"Daniel\", 2, 23, 0],\n    [\"Jakob\", 3, 23, 0],\n    [\"Soren\", \"048C3E5A\", 23, 0]\n    ];\nglobal.set(\"database\", database);\nglobal.set(\"username\", username);\nglobal.set(\"desiredTemp\", desiredTemp);",
+        "initialize": "// Code added here will be run once\n// whenever the node is started.\nlet username = \"\";\nlet desiredTemp = 23;\nlet database = [\n    [\"Abbas\", 0, 23, 20], \n    [\"Anel\", \"A29F8A3F\", 23, 20],\n    [\"Daniel\", 2, 23, 20],\n    [\"Jakob\", 3, 23, 20],\n    [\"Soren\", \"048C3E5A\", 23, 20]\n    ];\nglobal.set(\"database\", database);\nglobal.set(\"username\", username);\nglobal.set(\"desiredTemp\", desiredTemp);",
         "finalize": "",
         "libs": [],
         "x": 380,
@@ -445,7 +475,7 @@
         "type": "function",
         "z": "ae162ba06c86eb91",
         "name": "Find user and preset",
-        "func": "\n// find bruger ud fra database. Check om den passer med\nlet database = global.get(\"database\");\nlet user = \"\";\nlet currentUser = \"\";\nlet foundUser = false;\n\n\nfor (let i = 0; i < database.length; i++){\n    if (database[i][1] == msg.payload) {\n        user = database[i][0];\n        foundUser = true;\n        break;\n    }\n}\n\nif (foundUser == false) {\n    user = 'new user id ' + msg.payload;\n    currentUser = msg.payload;\n    msg.payload = user;\n    global.set(\"currentUser\",currentUser);\n    return [msg, null];\n\n} else {\n    // Found user, so display homescreen\n    msg.payload = user;\n    currentUser = user;\n    global.set(\"currentUser\",currentUser);\n    return [null, msg];\n}",
+        "func": "\n// find bruger ud fra database. Check om den passer med\nlet database = global.get(\"database\");\nlet user = \"\";\nlet currentUser = \"\";\nlet foundUser = false;\nlet i = 0;\n\n\nfor (i = 0; i < database.length; i++){\n    if (database[i][1] == msg.payload) {\n        user = database[i][0];\n        foundUser = true;\n        break;\n    }\n}\n\nif (foundUser == false) {\n    user = 'new user id ' + msg.payload;\n    currentUser = msg.payload;\n    msg.payload = user;\n    global.set(\"currentUser\",currentUser);\n    return [msg, null];\n\n} else {\n    // Found user, so display homescreen\n    msg.payload = user + ';' + database[i][2] + ';' + database[i][3];\n    currentUser = user;\n    global.set(\"currentUser\",currentUser);\n    return [null, msg];\n}",
         "outputs": 2,
         "timeout": 0,
         "noerr": 0,
@@ -463,11 +493,11 @@
                 "8f70c1b04fe1376e"
             ],
             [
-                "3490575e878f2cf7",
                 "c03e28529abf0c51",
                 "1b0207fcf5b4f192",
                 "f4bbd4236257586d",
-                "4e1b312dd6d8e92b"
+                "4e1b312dd6d8e92b",
+                "49982542cd983bf1"
             ]
         ]
     },
@@ -727,8 +757,8 @@
         "font": "",
         "fontSize": 16,
         "color": "#000000",
-        "x": 1290,
-        "y": 680,
+        "x": 1310,
+        "y": 820,
         "wires": []
     },
     {
@@ -816,7 +846,7 @@
         "to": "",
         "reg": false,
         "x": 840,
-        "y": 800,
+        "y": 840,
         "wires": [
             [
                 "2f866a0686a58e33"
@@ -829,7 +859,7 @@
         "z": "ae162ba06c86eb91",
         "name": "",
         "group": "a842e552509d81cf",
-        "order": 5,
+        "order": 9,
         "width": 0,
         "height": 0,
         "passthru": false,
@@ -844,7 +874,7 @@
         "topic": "topic",
         "topicType": "msg",
         "x": 660,
-        "y": 800,
+        "y": 840,
         "wires": [
             [
                 "ebc8906bcd9d17d3",
@@ -860,7 +890,7 @@
         "name": "",
         "events": "all",
         "x": 1020,
-        "y": 800,
+        "y": 840,
         "wires": [
             []
         ]
@@ -871,8 +901,8 @@
         "z": "ae162ba06c86eb91",
         "name": "",
         "events": "all",
-        "x": 1660,
-        "y": 720,
+        "x": 1680,
+        "y": 860,
         "wires": [
             []
         ]
@@ -896,8 +926,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1480,
-        "y": 720,
+        "x": 1500,
+        "y": 860,
         "wires": [
             [
                 "0a4fdc795f025a9b"
@@ -924,8 +954,8 @@
         "payloadType": "str",
         "topic": "topic",
         "topicType": "msg",
-        "x": 1300,
-        "y": 720,
+        "x": 1320,
+        "y": 860,
         "wires": [
             [
                 "76ef2d518212c8d7",
@@ -1045,7 +1075,7 @@
         "fontSize": 16,
         "color": "#000000",
         "x": 680,
-        "y": 900,
+        "y": 980,
         "wires": []
     },
     {
@@ -1068,7 +1098,7 @@
         "to": "",
         "reg": false,
         "x": 840,
-        "y": 1060,
+        "y": 1140,
         "wires": [
             [
                 "ba9752e294963fae"
@@ -1096,7 +1126,7 @@
         "topic": "topic",
         "topicType": "msg",
         "x": 660,
-        "y": 1060,
+        "y": 1140,
         "wires": [
             [
                 "64f6b89310fc1066",
@@ -1111,7 +1141,7 @@
         "name": "",
         "events": "all",
         "x": 1020,
-        "y": 1060,
+        "y": 1140,
         "wires": [
             []
         ]
@@ -1170,7 +1200,7 @@
         "z": "ae162ba06c86eb91",
         "name": "",
         "group": "6fe893c9504f9afb",
-        "order": 3,
+        "order": 11,
         "width": 0,
         "height": 0,
         "passthru": false,
@@ -1211,9 +1241,9 @@
         "z": "ae162ba06c86eb91",
         "name": "",
         "group": "6fe893c9504f9afb",
-        "order": 2,
-        "width": 0,
-        "height": 0,
+        "order": 4,
+        "width": 6,
+        "height": 4,
         "label": "Temperature in room 1 (10 min)",
         "chartType": "line",
         "legend": "true",
@@ -1230,7 +1260,7 @@
         "useOneColor": false,
         "useUTC": false,
         "colors": [
-            "#1f77b4",
+            "#cf2929",
             "#aec7e8",
             "#ff7f0e",
             "#2ca02c",
@@ -1243,8 +1273,8 @@
         "outputs": 1,
         "useDifferentColor": false,
         "className": "",
-        "x": 1430,
-        "y": 500,
+        "x": 1370,
+        "y": 540,
         "wires": [
             []
         ]
@@ -1256,7 +1286,7 @@
         "name": "",
         "info": "Create user:\n    * Fix indtast navn\n    * Fix at den gemmer.\n\nStatus\n    * Lav grafer baseret på data.\n\nSettings\n    * Tillad at skifte ønsket interval.\n\nHelp\n    * Ikke vigtig, skriv lidt tekst til hvordan det virker",
         "x": 660,
-        "y": 1100,
+        "y": 1180,
         "wires": []
     },
     {
@@ -1466,8 +1496,8 @@
         "links": [
             "6882afc21c22a825"
         ],
-        "x": 1415,
-        "y": 680,
+        "x": 1435,
+        "y": 820,
         "wires": []
     },
     {
@@ -1480,7 +1510,7 @@
             "6882afc21c22a825"
         ],
         "x": 805,
-        "y": 900,
+        "y": 980,
         "wires": []
     },
     {
@@ -1600,8 +1630,8 @@
         "font": "Arial,Arial,Helvetica,sans-serif",
         "fontSize": "16",
         "color": "#000000",
-        "x": 1290,
-        "y": 760,
+        "x": 1310,
+        "y": 900,
         "wires": []
     },
     {
@@ -1609,7 +1639,7 @@
         "type": "mqtt in",
         "z": "ae162ba06c86eb91",
         "name": "",
-        "topic": "s183668@student.dtu.dk/SensorToCloud",
+        "topic": "s183668@student.dtu.dk/SensorToCloudTemp",
         "qos": "2",
         "datatype": "auto-detect",
         "broker": "fdcb03fd266d8483",
@@ -1617,7 +1647,7 @@
         "rap": true,
         "rh": 0,
         "inputs": 0,
-        "x": 1400,
+        "x": 1390,
         "y": 380,
         "wires": [
             [
@@ -1647,13 +1677,14 @@
         "links": [
             "554c53eee32bd9c8"
         ],
-        "x": 1255,
-        "y": 500,
+        "x": 1195,
+        "y": 540,
         "wires": [
             [
                 "fcd171e0c189c231",
                 "351ac1716a65ca10",
-                "1d0d8bb9574f75b8"
+                "1d0d8bb9574f75b8",
+                "5322fd7362f42ec6"
             ]
         ]
     },
@@ -1664,7 +1695,7 @@
         "name": "",
         "label": "",
         "group": "a842e552509d81cf",
-        "order": 3,
+        "order": 4,
         "width": 0,
         "height": 0,
         "options": [
@@ -1720,11 +1751,11 @@
         "type": "ui_text",
         "z": "ae162ba06c86eb91",
         "group": "a842e552509d81cf",
-        "order": 2,
+        "order": 3,
         "width": 0,
         "height": 0,
         "name": "",
-        "label": "Current temperature",
+        "label": "Current temperature preference",
         "format": "{{msg.payload}}",
         "layout": "col-center",
         "className": "",
@@ -1732,8 +1763,8 @@
         "font": "",
         "fontSize": 16,
         "color": "#000000",
-        "x": 980,
-        "y": 720,
+        "x": 1010,
+        "y": 680,
         "wires": []
     },
     {
@@ -1741,8 +1772,8 @@
         "type": "function",
         "z": "ae162ba06c86eb91",
         "name": "function 2",
-        "func": "let database = global.get(\"database\");\nlet currentUser = global.get(\"currentUser\");\n\nfor (let i = 0; i < database.length; i++){\n    if (database[i][0] == currentUser) {\n        msg.payload = database[i][2];\n        break;\n    }\n}\n\n\nreturn msg;",
-        "outputs": 1,
+        "func": "let database = global.get(\"database\");\nlet currentUser = global.get(\"currentUser\");\nvar newMsg = { payload: msg.payload.length };\n\n\nfor (let i = 0; i < database.length; i++){\n    if (database[i][0] == currentUser) {\n        msg.payload = database[i][2];\n        newMsg.payload = database[i][3];\n        return [msg, newMsg];\n    }\n}\n\n\n\nreturn [null, null];",
+        "outputs": 2,
         "timeout": 0,
         "noerr": 0,
         "initialize": "",
@@ -1753,6 +1784,9 @@
         "wires": [
             [
                 "f3179b397010181b"
+            ],
+            [
+                "567f1c57856d4c49"
             ]
         ]
     },
@@ -1803,7 +1837,7 @@
         "type": "mqtt out",
         "z": "ae162ba06c86eb91",
         "name": "Send new temp to sensor",
-        "topic": "s183668@student.dtu.dk/CloudToSensor",
+        "topic": "s183668@student.dtu.dk/CloudToSensorTemp",
         "qos": "2",
         "retain": "",
         "respTopic": "",
@@ -1813,7 +1847,7 @@
         "expiry": "",
         "broker": "fdcb03fd266d8483",
         "x": 990,
-        "y": 680,
+        "y": 760,
         "wires": []
     },
     {
@@ -1829,7 +1863,7 @@
         "statusVal": "",
         "statusType": "auto",
         "x": 1640,
-        "y": 420,
+        "y": 340,
         "wires": []
     },
     {
@@ -1838,9 +1872,9 @@
         "z": "ae162ba06c86eb91",
         "name": "",
         "group": "6fe893c9504f9afb",
-        "order": 2,
-        "width": 0,
-        "height": 0,
+        "order": 6,
+        "width": 6,
+        "height": 4,
         "label": "Temperature in room 1 (1 hour)",
         "chartType": "line",
         "legend": "true",
@@ -1857,7 +1891,7 @@
         "useOneColor": false,
         "useUTC": false,
         "colors": [
-            "#1f77b4",
+            "#cf2929",
             "#aec7e8",
             "#ff7f0e",
             "#2ca02c",
@@ -1870,8 +1904,8 @@
         "outputs": 1,
         "useDifferentColor": false,
         "className": "",
-        "x": 1430,
-        "y": 540,
+        "x": 1370,
+        "y": 580,
         "wires": [
             []
         ]
@@ -1882,9 +1916,9 @@
         "z": "ae162ba06c86eb91",
         "name": "",
         "group": "6fe893c9504f9afb",
-        "order": 2,
-        "width": 0,
-        "height": 0,
+        "order": 8,
+        "width": 6,
+        "height": 4,
         "label": "Temperature in room 1 (1 day)",
         "chartType": "line",
         "legend": "true",
@@ -1901,7 +1935,7 @@
         "useOneColor": false,
         "useUTC": false,
         "colors": [
-            "#1f77b4",
+            "#cf2929",
             "#aec7e8",
             "#ff7f0e",
             "#2ca02c",
@@ -1914,8 +1948,8 @@
         "outputs": 1,
         "useDifferentColor": false,
         "className": "",
-        "x": 1430,
-        "y": 580,
+        "x": 1370,
+        "y": 620,
         "wires": [
             []
         ]
@@ -1933,7 +1967,7 @@
         "finalize": "",
         "libs": [],
         "x": 840,
-        "y": 1020,
+        "y": 1100,
         "wires": [
             [
                 "1f1cc73e23ebfa4f",
@@ -1960,7 +1994,7 @@
         "className": "",
         "topicType": "msg",
         "x": 670,
-        "y": 940,
+        "y": 1020,
         "wires": [
             [
                 "b9487ee610a55988"
@@ -1986,7 +2020,7 @@
         "className": "",
         "topicType": "msg",
         "x": 670,
-        "y": 980,
+        "y": 1060,
         "wires": [
             [
                 "e009ae2db652f4e9"
@@ -2006,7 +2040,7 @@
         "finalize": "",
         "libs": [],
         "x": 840,
-        "y": 940,
+        "y": 1020,
         "wires": [
             []
         ]
@@ -2032,7 +2066,7 @@
         "topic": "topic",
         "topicType": "msg",
         "x": 660,
-        "y": 1020,
+        "y": 1100,
         "wires": [
             [
                 "4e2518629fcb366a"
@@ -2052,7 +2086,7 @@
         "finalize": "",
         "libs": [],
         "x": 840,
-        "y": 980,
+        "y": 1060,
         "wires": [
             []
         ]
@@ -2067,7 +2101,7 @@
             "a54ad6d69372effd"
         ],
         "x": 955,
-        "y": 1020,
+        "y": 1100,
         "wires": []
     },
     {
@@ -2117,7 +2151,7 @@
         "statusVal": "",
         "statusType": "auto",
         "x": 1040,
-        "y": 940,
+        "y": 1020,
         "wires": []
     },
     {
@@ -2142,7 +2176,7 @@
             "150a8ca7070be110"
         ],
         "x": 555,
-        "y": 940,
+        "y": 1020,
         "wires": [
             [
                 "09ba5580cc66a349",
@@ -2176,5 +2210,473 @@
                 "150a8ca7070be110"
             ]
         ]
+    },
+    {
+        "id": "1f602df3e398ee0b",
+        "type": "ui_chart",
+        "z": "ae162ba06c86eb91",
+        "name": "",
+        "group": "6fe893c9504f9afb",
+        "order": 5,
+        "width": 6,
+        "height": 4,
+        "label": "Humidity in room 1 (10 min)",
+        "chartType": "line",
+        "legend": "true",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "100",
+        "removeOlder": "10",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "60",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#3b38ff",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d12929",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1720,
+        "y": 540,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "d18a0e7faded5a1e",
+        "type": "ui_chart",
+        "z": "ae162ba06c86eb91",
+        "name": "",
+        "group": "6fe893c9504f9afb",
+        "order": 7,
+        "width": 6,
+        "height": 4,
+        "label": "Humidity in room 1 (1 hour)",
+        "chartType": "line",
+        "legend": "true",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "100",
+        "removeOlder": "1",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d12929",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1720,
+        "y": 580,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c737988d6fae010b",
+        "type": "ui_chart",
+        "z": "ae162ba06c86eb91",
+        "name": "",
+        "group": "6fe893c9504f9afb",
+        "order": 9,
+        "width": 6,
+        "height": 4,
+        "label": "Humidity in room 1 (1 day)",
+        "chartType": "line",
+        "legend": "true",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "100",
+        "removeOlder": "1",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "86400",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d12929",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1720,
+        "y": 620,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "5322fd7362f42ec6",
+        "type": "ui_gauge",
+        "z": "ae162ba06c86eb91",
+        "name": "",
+        "group": "6fe893c9504f9afb",
+        "order": 2,
+        "width": 6,
+        "height": 4,
+        "gtype": "gage",
+        "title": "Temperature",
+        "label": "units",
+        "format": "{{msg.payload}}",
+        "min": "0",
+        "max": "50",
+        "colors": [
+            "#c43636",
+            "#b13131",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 1310,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "2d8135b69b96feb8",
+        "type": "ui_gauge",
+        "z": "ae162ba06c86eb91",
+        "name": "",
+        "group": "6fe893c9504f9afb",
+        "order": 3,
+        "width": 6,
+        "height": 4,
+        "gtype": "wave",
+        "title": "Humidity",
+        "label": "%",
+        "format": "{{msg.payload}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 1660,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "8f241f9bed008d48",
+        "type": "link in",
+        "z": "ae162ba06c86eb91",
+        "name": "link in 5",
+        "links": [
+            "e14de5c03d82bf3f"
+        ],
+        "x": 1545,
+        "y": 540,
+        "wires": [
+            [
+                "1f602df3e398ee0b",
+                "2d8135b69b96feb8",
+                "d18a0e7faded5a1e",
+                "c737988d6fae010b"
+            ]
+        ]
+    },
+    {
+        "id": "32df07fbe5ad344d",
+        "type": "mqtt in",
+        "z": "ae162ba06c86eb91",
+        "name": "",
+        "topic": "s183668@student.dtu.dk/SensorToCloudHum",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "fdcb03fd266d8483",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 1830,
+        "y": 380,
+        "wires": [
+            [
+                "e14de5c03d82bf3f",
+                "4825b621cb5e6acf"
+            ]
+        ]
+    },
+    {
+        "id": "e14de5c03d82bf3f",
+        "type": "link out",
+        "z": "ae162ba06c86eb91",
+        "name": "link out 10",
+        "mode": "link",
+        "links": [
+            "8f241f9bed008d48"
+        ],
+        "x": 2035,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "4825b621cb5e6acf",
+        "type": "debug",
+        "z": "ae162ba06c86eb91",
+        "name": "debug 6",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 2080,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "49982542cd983bf1",
+        "type": "function",
+        "z": "ae162ba06c86eb91",
+        "name": "function 6",
+        "func": "let currentUser = global.get(\"currentUser\");\n\nmsg.payload = currentUser;\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 520,
+        "y": 420,
+        "wires": [
+            [
+                "3490575e878f2cf7"
+            ]
+        ]
+    },
+    {
+        "id": "c9188073162e3881",
+        "type": "ui_form",
+        "z": "ae162ba06c86eb91",
+        "name": "",
+        "label": "",
+        "group": "a842e552509d81cf",
+        "order": 7,
+        "width": 0,
+        "height": 0,
+        "options": [
+            {
+                "label": "Humidity",
+                "value": "Input new humidity",
+                "type": "number",
+                "required": true,
+                "rows": null
+            }
+        ],
+        "formValue": {
+            "Input new humidity": ""
+        },
+        "payload": "",
+        "submit": "Change humidity",
+        "cancel": "",
+        "topic": "topic",
+        "topicType": "msg",
+        "splitLayout": "",
+        "className": "",
+        "x": 650,
+        "y": 800,
+        "wires": [
+            [
+                "e8b19fa5c1e1d407"
+            ]
+        ]
+    },
+    {
+        "id": "e8b19fa5c1e1d407",
+        "type": "function",
+        "z": "ae162ba06c86eb91",
+        "name": "function 7",
+        "func": "let database = global.get(\"database\");\nlet currentUser = global.get(\"currentUser\");\n\nlet data = msg.payload[\"Input new humidity\"];\n\nfor (let i = 0; i < database.length; i++){\n    if (database[i][0] == currentUser) {\n        let hum = Number(data);\n        database[i][3] = hum; // Update the database entry\n        global.set(\"database\", database);\n        msg.payload = hum; // Set the payload to the number\n        break;\n    }\n}\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 800,
+        "y": 800,
+        "wires": [
+            [
+                "a958fa0cedd935b4"
+            ]
+        ]
+    },
+    {
+        "id": "a958fa0cedd935b4",
+        "type": "mqtt out",
+        "z": "ae162ba06c86eb91",
+        "name": "Send new hum to sensor",
+        "topic": "s183668@student.dtu.dk/CloudToSensorHum",
+        "qos": "2",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "fdcb03fd266d8483",
+        "x": 990,
+        "y": 800,
+        "wires": []
+    },
+    {
+        "id": "567f1c57856d4c49",
+        "type": "ui_text",
+        "z": "ae162ba06c86eb91",
+        "group": "a842e552509d81cf",
+        "order": 6,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Current humidity preference",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 1000,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "6f86f18419a4ef3c",
+        "type": "inject",
+        "z": "ae162ba06c86eb91",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "5",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "2",
+        "topic": "",
+        "payload": "27.123",
+        "payloadType": "str",
+        "x": 1260,
+        "y": 180,
+        "wires": [
+            [
+                "40749845bb7a56e6"
+            ]
+        ]
+    },
+    {
+        "id": "40749845bb7a56e6",
+        "type": "mqtt out",
+        "z": "ae162ba06c86eb91",
+        "name": "",
+        "topic": "s183668@student.dtu.dk/SensorToCloudTemp",
+        "qos": "2",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "fdcb03fd266d8483",
+        "x": 1520,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "2b1c30dbb524c237",
+        "type": "inject",
+        "z": "ae162ba06c86eb91",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "5",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "2",
+        "topic": "",
+        "payload": "90",
+        "payloadType": "str",
+        "x": 1250,
+        "y": 220,
+        "wires": [
+            [
+                "2bf31e621a49c53e"
+            ]
+        ]
+    },
+    {
+        "id": "2bf31e621a49c53e",
+        "type": "mqtt out",
+        "z": "ae162ba06c86eb91",
+        "name": "",
+        "topic": "s183668@student.dtu.dk/SensorToCloudHum",
+        "qos": "2",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "fdcb03fd266d8483",
+        "x": 1520,
+        "y": 220,
+        "wires": []
     }
 ]
