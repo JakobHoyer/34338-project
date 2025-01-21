@@ -49,9 +49,15 @@ int lcdRows = 2;
 
 LiquidCrystal_I2C lcd(0x27, lcdColumns, lcdRows);
 
+
+
+
 // Definerer id og password til netværksforbindelse som NodeMCU anvender
-const char* ssid = "Jakob - iPhone";    
-const char* password = "kodekodeadad";
+const char *ssid = "Jakob - iPhone";
+const char *password = "kodekodeadad";
+//const char* ssid = "ZEPPER";
+//const char* password = "12344321";
+
 
 // Definerer information til mqtt serveren
 const char *mqtt_server = "maqiatto.com";          //navn på mqtt-server. Find navnet på cloudmqtt-hjemmesiden
@@ -59,6 +65,10 @@ const int mqtt_port = 1883;                        // Definerer porten
 const char *mqtt_user = "s183668@student.dtu.dk";  // Definerer mqtt-brugeren
 const char *mqtt_pass = "kodekodeadad";            // Definerer koden til mqtt-brugeren
 const char *mqtt_topic = "s183668@student.dtu.dk/hub";
+const char *mqtt_topic_ST = "s183668@student.dtu.dk/SensorToCloudTemp";
+const char *mqtt_topic_SH = "s183668@student.dtu.dk/SensorToCloudHum";
+const char *mqtt_topic_CT = "s183668@student.dtu.dk/CloudToSensorTemp";
+const char *mqtt_topic_CH = "s183668@student.dtu.dk/CloudToSensorHum";
 //
 
 String payload;  // Definerer variablen 'payload' i det globale scope (payload er navnet på besked-variablen)
@@ -80,31 +90,30 @@ PubSubClient client(mqtt_server, mqtt_port, callback, espClient);  // Initialise
 void setup() {
   //pinMode(buttonPin, INPUT_PULLUP);
   Serial.begin(9600);
-  SPI.begin();      // Init SPI bus
-  rfid.PCD_Init();  // Init MFRC522
+  SPI.begin();         // Init SPI bus
+  rfid.PCD_Init();     // Init MFRC522'
+  Wire.begin(D4, D1);  // SDA=D4 (GPIO2), SCL=D1 (GPIO5)
   lcd.init();
   lcd.backlight();
   // Print a message to the LCD.
   Serial.println(F("This code scan the MIFARE Classsic NUID."));
-  Wire.begin(D4, D1); // SDA=D4 (GPIO2), SCL=D1 (GPIO5)
+  lcd.setCursor(0, 1);
+  lcd.clear();
 
-lcd.setCursor(0, 1);
-  lcd.print("                         ");
-
-  lcd.backlight();   // Turn on backlight
-
+  lcd.backlight();  // Turn on backlight
+                    /*
   lcd.setCursor(0, 1);
   lcd.print("D11");
 
   lcd.setCursor(4, 1);
   lcd.print("D21");
 
- lcd.setCursor(8, 1);
+  lcd.setCursor(8, 1);
   lcd.print("D31");
 
- lcd.setCursor(12, 1);
+  lcd.setCursor(12, 1);
   lcd.print("D41");
-
+*/
 
 
   setup_wifi();                              // Kører WiFi loopet og forbinder herved.
@@ -116,22 +125,24 @@ void loop() {
 
   ////// LOOP /////////
 
-//if(checkButtonState(buttonPin)){
- // delay(50);
+  //if(checkButtonState(buttonPin)){
+  // delay(50);
 
   // Hvis der opstår problemer med forbindelsen til mqtt broker oprettes forbindelse igen ved at køre client loop
   if (!client.connected()) {
     reconnect();
   }
   client.loop();
-  
+
+
+
   for (int i = 0; i < 4; i++) {
     sprintf(&hexString[i * 2], "%02X", nuidPICC[i]);
   }
 
   // Reset the loop if no new card present on the sensor/reader. This saves the entire process when idle.
   if (!rfid.PICC_IsNewCardPresent())
-  return;
+    return;
 
   // Verify if the NUID has been readed
   if (!rfid.PICC_ReadCardSerial())
@@ -143,8 +154,6 @@ void loop() {
   delay(100);
 
 
-  lcd.setCursor(0, 0);  // Set the LCD cursor position
-  lcd.print("Soerens card");
 
 
 
@@ -181,15 +190,15 @@ void loop() {
   // Stop encryption on PCD
   rfid.PCD_StopCrypto1();
 
-  compareByteArrays(nuidPICC, preset1, 4);
-  }
-  //else 
-  //{
-  //  Serial.println("loool");
-  //}
+  //compareByteArrays(nuidPICC, preset1, 4);
+}
+//else
+//{
+//  Serial.println("loool");
+//}
 //}
 
-
+/*
 void compareByteArrays(byte *array1, byte *array2, size_t size) {
   bool areIdentical = true;  // Flag to track if arrays are identical
 
@@ -211,7 +220,7 @@ void compareByteArrays(byte *array1, byte *array2, size_t size) {
     lcd.print("Unknown card");
   }
 }
-
+*/
 /**
  * Helper routine to dump a byte array as hex values to Serial. 
  */
@@ -224,7 +233,7 @@ void printHex(byte *buffer, byte bufferSize) {
     //for (byte i = 0; i < 4; i++) {
 
     //  if (nuidPICC[i] < 0x10) lcd.print("0");  // Add a leading zero for single-digit hex values
-   //   lcd.print(nuidPICC[i], HEX);             // Print each byte in HEX
+    //   lcd.print(nuidPICC[i], HEX);             // Print each byte in HEX
     //  if (i < 3) lcd.print("");                // Add a colon between bytes, except the last
     //}
   }
@@ -243,6 +252,23 @@ void printDec(byte *buffer, byte bufferSize) {
   }
 }
 
+String getValue(String data, char separator, int index) {
+  int found = 0;
+  int strIndex[] = { 0, -1 };
+  int maxIndex = data.length() - 1;
+
+  for (int i = 0; i <= maxIndex && found <= index; i++) {
+    if (data.charAt(i) == separator || i == maxIndex) {
+      found++;
+      strIndex[0] = strIndex[1] + 1;
+      strIndex[1] = (i == maxIndex) ? i + 1 : i;
+    }
+  }
+
+  return found > index ? data.substring(strIndex[0], strIndex[1]) : "";
+}
+
+
 // Definerer callback funktionen der modtager beskeder fra mqtt
 // OBS: den her funktion kører hver gang MCU'en modtager en besked via mqtt
 void callback(char *byteArraytopic, byte *byteArrayPayload, unsigned int length) {
@@ -259,23 +285,66 @@ void callback(char *byteArraytopic, byte *byteArrayPayload, unsigned int length)
     payload = "";             // Nulstil payload variablen så forloopet ikke appender til en allerede eksisterende payload
     for (int i = 0; i < length; i++) {
       payload += (char)byteArrayPayload[i];
-      // For-loop: tag hvert tegn i hele længden af den inkomne besked, og konverter denne til en char. Append tegnene 1 efter 1:
-      // Eksempel:
-      // Besked = Study Abroad
-      // Length = 12
-      // Loop 1 = "S"
-      // Loop 2 = "St" osv.
-      // Loop (length) = "Study Abroad"
-
-      if (payload == "LED") {
-        // Definerer funktion som bruges til at styre temperaturmåling
-
-        delay(1000);
-        client.publish(mqtt_topic, "LED er taendt");
-      }
     }
     Serial.println(payload);
-    //client.publish("mqtt", String(payload).c_str()); // Publish besked fra MCU til et valgt topic. Husk at subscribe til topic'et i NodeRed.
+    lcd.clear();
+    String name = getValue(payload, ';', 0);
+    String temp = getValue(payload, ';', 1);
+    String hum = getValue(payload, ';', 2);
+    Serial.println(hum);
+    lcd.setCursor(8, 1);  // Set the LCD cursor position
+    lcd.print(hum);
+    Serial.println(temp);
+    lcd.setCursor(0, 1);  // Set the LCD cursor position
+    lcd.print(temp);
+    Serial.println(name);
+    lcd.setCursor(0, 0);  // Set the LCD cursor position
+    lcd.print("                ");
+    lcd.setCursor(0, 0);  // Set the LCD cursor position
+    lcd.print(name);
+  } else if (topic == mqtt_topic_ST) {  // OBS: der subscribes til et topic nede i reconnect-funktionen. I det her tilfælde er der subscribed til "Test". Man kan subscribe til alle topics ved at bruge "#"
+    payload = "";                       // Nulstil payload variablen så forloopet ikke appender til en allerede eksisterende payload
+    for (int i = 0; i < length; i++) {
+      payload += (char)byteArrayPayload[i];
+    }
+  float payloadFloat = payload.toFloat();  // Convert string to float
+  char paybuffer[10];  // Buffer to store formatted value
+  dtostrf(payloadFloat, 4, 1, paybuffer);  // Convert float to string with 1 decimal
+
+  lcd.setCursor(3, 1);  // Set cursor to first row
+  lcd.print(paybuffer);
+    // store current temp
+
+  } else if (topic == mqtt_topic_SH) {  // OBS: der subscribes til et topic nede i reconnect-funktionen. I det her tilfælde er der subscribed til "Test". Man kan subscribe til alle topics ved at bruge "#"
+    payload = "";                       // Nulstil payload variablen så forloopet ikke appender til en allerede eksisterende payload
+    for (int i = 0; i < length; i++) {
+      payload += (char)byteArrayPayload[i];
+    }
+    float payloadFloat = payload.toFloat();  // Convert string to float
+  char paybuffer[10];  // Buffer to store formatted value
+  dtostrf(payloadFloat, 4, 1, paybuffer);  // Convert float to string with 1 decimal
+
+  lcd.setCursor(11, 1);  // Set cursor to first row
+  lcd.print(paybuffer);
+    // Store current hum
+  } else if (topic == mqtt_topic_CT) {  // OBS: der subscribes til et topic nede i reconnect-funktionen. I det her tilfælde er der subscribed til "Test". Man kan subscribe til alle topics ved at bruge "#"
+    payload = "";                       // Nulstil payload variablen så forloopet ikke appender til en allerede eksisterende payload
+    for (int i = 0; i < length; i++) {
+      payload += (char)byteArrayPayload[i];
+    }
+    lcd.setCursor(0, 1);  // Set the LCD cursor position
+    lcd.print(payload);
+    // Store pref temp
+  }
+
+    else if (topic == mqtt_topic_CH) {  // OBS: der subscribes til et topic nede i reconnect-funktionen. I det her tilfælde er der subscribed til "Test". Man kan subscribe til alle topics ved at bruge "#"
+    payload = "";                // Nulstil payload variablen så forloopet ikke appender til en allerede eksisterende payload
+    for (int i = 0; i < length; i++) {
+      payload += (char)byteArrayPayload[i];
+    }
+    lcd.setCursor(8, 1);  // Set the LCD cursor position
+    lcd.print(payload);
+    // Store pref hum
   }
 }
 
@@ -316,10 +385,14 @@ void reconnect() {
   while (!client.connected()) {
     Serial.print("Forsøger at oprette MQTT forbindelse...");
 
-    if (client.connect("GroupNamexMCU", mqtt_user, mqtt_pass)) {  // Forbinder til klient med mqtt bruger og password
+    if (client.connect("HubClient", mqtt_user, mqtt_pass)) {  // Forbinder til klient med mqtt bruger og password
       Serial.println("connected");
       // Derudover subsribes til topic "Test" hvor NodeMCU modtager payload beskeder fra
       client.subscribe(mqtt_topic);
+      client.subscribe(mqtt_topic_ST);
+      client.subscribe(mqtt_topic_SH);
+      client.subscribe(mqtt_topic_CT);
+      client.subscribe(mqtt_topic_CH);
       // Der kan subscribes til flere specifikke topics
       //client.subscribe("Test1");
       // Eller til samtlige topics ved at bruge '#' (Se Power Point fra d. 18. marts)
@@ -337,17 +410,17 @@ void reconnect() {
 }
 
 bool checkButtonState(int buttonPin) {
-  static bool buttonState = false;     // Current toggle state (true/false)
-  static bool lastButtonPressed = false; // Tracks if the button was previously pressed
-  
-  bool currentButtonPressed = digitalRead(buttonPin) == LOW; // Read current button state
-  
+  static bool buttonState = false;        // Current toggle state (true/false)
+  static bool lastButtonPressed = false;  // Tracks if the button was previously pressed
+
+  bool currentButtonPressed = digitalRead(buttonPin) == LOW;  // Read current button state
+
   // Detect a rising edge: button goes from unpressed to pressed
   if (currentButtonPressed && !lastButtonPressed) {
-    buttonState = !buttonState; // Toggle the state
+    buttonState = !buttonState;  // Toggle the state
   }
-  
-  lastButtonPressed = currentButtonPressed; // Update the last button state
-  
-  return buttonState; // Return the new button state
+
+  lastButtonPressed = currentButtonPressed;  // Update the last button state
+
+  return buttonState;  // Return the new button state
 }
