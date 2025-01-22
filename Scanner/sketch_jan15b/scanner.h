@@ -1,6 +1,7 @@
-#ifndef SKETCH_JAN15B_H
-#define SKETCH_JAN15B_H
+#ifndef SCANNER_H
+#define SCANNER_H
 
+// Include all relevant libraries.
 #include <SPI.h>
 #include <MFRC522.h>
 #include <LiquidCrystal_I2C.h>
@@ -8,47 +9,39 @@
 #include <PubSubClient.h>
 #include <ESP8266HTTPClient.h>
 
-//#define SS_PIN D8
-//#define RST_PIN D3
-
-
-
-
+// Init array that will store.
 extern byte nuidPICC[4];
 extern char hexString[9];
 
-// variables for LCD display
+// Variables for LCD display.
 extern int lcdColumns;
 extern int lcdRows;
-
 extern LiquidCrystal_I2C lcd;
 
+// Payload variable for receiving messages from the cloud.
+extern String payload;
 
 
-
-extern String payload;  // Definerer variablen 'payload' i det globale scope (payload er navnet på besked-variablen)
-
-
+// Define variables for wifi and mqtt server setup.
 extern const char *ssid;
 extern const char *password;
 
-extern const char *mqtt_server;          //navn på mqtt-server. Find navnet på cloudmqtt-hjemmesiden
-extern const int mqtt_port;                        // Definerer porten
-extern const char *mqtt_user;  // Definerer mqtt-brugeren
-extern const char *mqtt_pass;            // Definerer koden til mqtt-brugeren
+extern const char *mqtt_server;          
+extern const int mqtt_port;                        
+extern const char *mqtt_user;  
+extern const char *mqtt_pass;            
 extern const char *mqtt_topic;
 extern const char *mqtt_topic_ST;
 extern const char *mqtt_topic_SH;
 extern const char *mqtt_topic_CT;
 extern const char *mqtt_topic_CH;
 
-extern MFRC522 rfid;       // RFID object
+// define RFID object, wificlient and pubsubclient as external variables to not risk declaring them in multiple cpp files.
+extern MFRC522 rfid;       
 extern WiFiClient espClient;
 extern PubSubClient client;
 
-
-
-
+// functions used in the code, see full descriptions in cpp file.
 String getValue(String data, char separator, int index);
 
 void setupscanner();
@@ -62,10 +55,5 @@ void callback(char *byteArraytopic, byte *byteArrayPayload, unsigned int length)
 void setup_wifi();
 
 void reconnect();
-
-bool checkButtonState(int buttonPin);
-
-
-
 
 #endif
