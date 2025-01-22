@@ -5,13 +5,13 @@
 #include <PubSubClient.h>
 #include <ESP8266HTTPClient.h>
 #include <DHT.h>
-#include <Servo.h>
+#include "ESP8266_ISR_Servo.h"
+
+#define SERVO_PIN D7  // GPIO pin for servo
 #define DHT_PIN D2
 #define DHT_TYPE DHT11
 
 DHT dht(DHT_PIN, DHT_TYPE);
-
-Servo myServo;
 
 // Definerer id og password til netværksforbindelse som NodeMCU anvender
 const char* ssid = "Jakob - iPhone";    //Indsæt navnet på jeres netværk her
@@ -40,7 +40,7 @@ const int BluePin = D5;
 const int TempPin = A0;
 
 // The used MCU Nude, has max voltage of 3.3v, it doesnt matter, it is for the equation.
-const float referenceVoltage = 5.0;
+const float referenceVoltage = 3;
 
 // Initialisation of variables.
 int BlueIntensity = 0;
@@ -49,23 +49,19 @@ int sensorValue = 0;
 float voltage = 0.0;
 float Temp = 0.0;
 
+// Global servo index variable
+int servoIndex = -1;
+
 //to account for nois, we use avarge temp reading.
 float Temp_Avg = 0;
 
+float received_temp = 0;
+
+int lastState = 0;
+int state = 0;
+
 // Default prefered temperture
 float temp_pref_low = 21.0, temp_pref_high = 23.0;
-
-/////// INITIERING SLUT //////////
-
-//
-//
-//
-//
-//
-//
-
-/////// FUNKTIONSOPSÆTNING ////////
-
 
 // Opretter en placeholder for callback-funktionen til brug senere. Den rigtige funktion ses længere nede.
 void callback(char* byteArraytopic, byte* byteArrayPayload, unsigned int length);
@@ -106,7 +102,7 @@ void callback(char* byteArraytopic, byte* byteArrayPayload, unsigned int length)
     }
 
     // Modtagne temperature som Konverteres fra string til float:
-    float received_temp = payload.toFloat();
+    received_temp = payload.toFloat();
     Serial.print("Received temperature: ");
     Serial.println(received_temp);
 
@@ -114,8 +110,8 @@ void callback(char* byteArraytopic, byte* byteArrayPayload, unsigned int length)
       Temp_interval(received_temp);
     }
 
-    //Serial.println(payload);
-    //client.publish("mqtt", String(payload).c_str()); // Publish besked fra MCU til et valgt topic. Husk at subscribe til topic'et i NodeRed.
+    Serial.println(payload);
+    client.publish("mqtt", String(payload).c_str());  // Publish besked fra MCU til et valgt topic. Husk at subscribe til topic'et i NodeRed.
   }
 
   else if (topic == mqtt_topic_hum) {
@@ -130,18 +126,6 @@ void callback(char* byteArraytopic, byte* byteArrayPayload, unsigned int length)
     Serial.println(received_hum);
   }
 }
-
-///////// CALLBACK SLUT /////////
-
-//
-//
-//
-//
-//
-//
-
-/////// OPSÆTNING AF WIFI-FORBINDELSE  ///////////
-
 
 // Opretter forbindelse til WiFi
 void setup_wifi() {
@@ -201,30 +185,27 @@ void reconnect() {
   }
 }
 
-///////// OPSÆTNING AF WIFI SLUT /////////
-
-//
-//
-//
-//
-//
-//
-
-///////// SETUP ///////////
 void setup() {
 
   Serial.begin(115200);  // Åbner serial porten og sætter data raten til 115200 baud
   delay(1000);
 
+  // Initialize servo
+  servoIndex = ISR_Servo.setupServo(SERVO_PIN, 500, 2500);
+  if (servoIndex == -1) {
+    Serial.println("Error: Could not set up the servo.");
+  } else {
+    Serial.println("Servo initialized.");
+  }
+
   // Set pin modes
   pinMode(RedPin, OUTPUT);
   pinMode(GreenPin, OUTPUT);
   pinMode(BluePin, OUTPUT);
-
-  Serial.println("ESP8266 ADC Receiver Started...");
   pinMode(D1, OUTPUT);
   pinMode(D4, OUTPUT);
 
+  Serial.println("ESP8266 ADC Receiver Started...");
   setup_wifi();                              // Kører WiFi loopet og forbinder herved.
   client.setServer(mqtt_server, mqtt_port);  // Forbinder til mqtt serveren (defineret længere oppe)
   client.setCallback(callback);              // Ingangsætter den definerede callback funktion hver gang der er en ny besked på den subscribede "cmd"- topic
@@ -234,10 +215,6 @@ void setup() {
   float humidity = dht.readHumidity();
   Serial.print("Air humidity: ");
   Serial.println(humidity);
-  //delay(1000);
-
-  myServo.attach(3);  // Attach the servo to pin D3
-  myServo.write(0);   // Set the servo to the starting position (0 degrees)
 }
 //////// SETUP SLUT ////////
 
@@ -251,8 +228,21 @@ void setup() {
 /////// LOOP /////////
 
 void loop() {
-
   // Hvis der opstår problemer med forbindelsen til mqtt broker oprettes forbindelse igen ved at køre client loop
+  /*
+  if (turn) {
+    Serial.print("Turn = ");
+    Serial.println(turn);
+    turnServo180();
+  } else {
+    turnServo0();
+    Serial.print("Turn2 = ");
+    Serial.println(turn);
+  }
+  turn = !turn;
+*/
+
+
   if (!client.connected()) {
     reconnect();
   }
@@ -262,7 +252,6 @@ void loop() {
 
   client.publish("s183668@student.dtu.dk/SensorToCloudTemp", tempStr.c_str());  // Konverter til C-streng
 
-
   float humidity = dht.readHumidity();
   if (isnan(humidity)) {
     Serial.println("Error: Failed to read humidity!");
@@ -271,21 +260,31 @@ void loop() {
   String humidityStr = String(humidity, 2);
 
   client.publish("s183668@student.dtu.dk/SensorToCloudHum", humidityStr.c_str());
-  Serial.print("Humidity: ");
-  Serial.println(humidity);
-
-  radiatorControl(temp)
 
   //fane kode
-  if (temp >= temp_pref_high) {
-    fanturnon();
-    }
-  else {
-    digitalWrite(D1, LOW);
-  }
-}
 
-//////// Loop slut ////////
+  if (temp >= received_temp + 2) {
+    Serial.println("Varm");
+    fanturnon();
+    Serial.println("turn1");
+    //ISR_Servo.setPosition(servoIndex, 0);
+    turnServo0();
+
+  } else if (temp <= received_temp - 2) {
+    Serial.println("Kold");
+    radiatorturnon();
+    Serial.println("turn");
+    //ISR_Servo.setPosition(servoIndex, 180);
+    turnServo180();
+
+  } else {
+    Serial.println("Neutral");
+    neutral();
+  }
+
+
+  delay(10);
+}
 
 float Temp_sens() {
   Temp_Avg = 0;
@@ -312,20 +311,20 @@ void Temp_interval(float temp_pref) {
 
 void LED_Indication(float current_temp) {
   // green when in prefered temp range
-  if (current_temp >= temp_pref_low && current_temp <= temp_pref_high) {
+  if (current_temp >= received_temp - 2 && current_temp <= received_temp + 2) {
     analogWrite(RedPin, 0);
     analogWrite(GreenPin, 255);
     analogWrite(BluePin, 0);
   }
 
   // when lower than prefered (mix of green and blue when between -5 and lower preference)
-  else if (current_temp < temp_pref_low) {
+  else if (current_temp < received_temp - 2) {
     // Intensity of blue
-    BlueIntensity = map(current_temp, temp_pref_low - 5, temp_pref_low, 255, 0);
+    BlueIntensity = map(current_temp, received_temp - 2 - 5, received_temp - 2, 255, 0);
     BlueIntensity = constrain(BlueIntensity, 0, 255);
 
     //Intensisty of green
-    GreenIntensity = map(current_temp, temp_pref_low, temp_pref_low - 5, 255, 0);
+    GreenIntensity = map(current_temp, received_temp - 2, received_temp - 2 - 5, 255, 0);
     GreenIntensity = constrain(GreenIntensity, 0, 255);
 
     analogWrite(RedPin, 0);
@@ -336,7 +335,7 @@ void LED_Indication(float current_temp) {
   // When higer than prefered orange when between +5 and upper preference
   else {
     //Intensity of green
-    GreenIntensity = map(current_temp, temp_pref_high, temp_pref_high + 5, 100, 0);
+    GreenIntensity = map(current_temp, received_temp + 2, received_temp + 2 + 5, 100, 0);
     GreenIntensity = constrain(GreenIntensity, 0, 100);
 
     analogWrite(RedPin, 255);
@@ -347,13 +346,32 @@ void LED_Indication(float current_temp) {
 
 void fanturnon() {
   digitalWrite(D1, HIGH);
+  digitalWrite(D4, LOW);
 }
 
-void radiatorControl(float Temperature) {
-   if (Temperature < temp_pref_low) { // if temperature is less than the desired temp turn on valve
-      myServo.write(180);  // set servo to 180 degrees to indicate a valve turning on
-    } 
-    else if (Temperature > temp_pref_high) { // else if temperature is more than two degrees over the desired temp turn off valve
-      myServo.write(0);  // Set servo to 0 degrees to indicate a valve turning off
+void radiatorturnon() {
+  digitalWrite(D4, HIGH);
+  digitalWrite(D1, LOW);
+}
+
+void neutral() {
+  digitalWrite(D1, LOW);
+  digitalWrite(D4, LOW);
+  turnServo0();
+}
+
+// Function to move the servo to 180 degrees
+void turnServo180() {
+  if (servoIndex != -1) {
+    Serial.println("Servo moved to 180 degrees.");
+    ISR_Servo.setPosition(servoIndex, 180);
+  }
+}
+
+// Function to move the servo to 0 degrees
+void turnServo0() {
+  if (servoIndex != -1) {
+    Serial.println("Servo moved to 0 degrees.");
+    ISR_Servo.setPosition(servoIndex, 0);
   }
 }
