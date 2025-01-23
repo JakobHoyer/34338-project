@@ -287,26 +287,6 @@
         "sessionExpiry": ""
     },
     {
-        "id": "23ca3c0bbb433621",
-        "type": "ui_spacer",
-        "z": "ae162ba06c86eb91",
-        "name": "spacer",
-        "group": "8760a5fd5ea8e2bf",
-        "order": 2,
-        "width": 6,
-        "height": 1
-    },
-    {
-        "id": "d963d5b8fc7e3e57",
-        "type": "ui_spacer",
-        "z": "ae162ba06c86eb91",
-        "name": "spacer",
-        "group": "8760a5fd5ea8e2bf",
-        "order": 6,
-        "width": 6,
-        "height": 1
-    },
-    {
         "id": "6b4dd99c7545cf98",
         "type": "ui_spacer",
         "z": "ae162ba06c86eb91",
@@ -343,6 +323,26 @@
         "name": "spacer",
         "group": "a842e552509d81cf",
         "order": 8,
+        "width": 6,
+        "height": 1
+    },
+    {
+        "id": "db8e786b888e5cd4",
+        "type": "ui_spacer",
+        "z": "ae162ba06c86eb91",
+        "name": "spacer",
+        "group": "8760a5fd5ea8e2bf",
+        "order": 2,
+        "width": 6,
+        "height": 1
+    },
+    {
+        "id": "1d1d0cff7e3ca0f1",
+        "type": "ui_spacer",
+        "z": "ae162ba06c86eb91",
+        "name": "spacer",
+        "group": "8760a5fd5ea8e2bf",
+        "order": 7,
         "width": 6,
         "height": 1
     },
@@ -401,8 +401,8 @@
         "font": "",
         "fontSize": 16,
         "color": "#000000",
-        "x": 150,
-        "y": 380,
+        "x": 310,
+        "y": 420,
         "wires": []
     },
     {
@@ -497,7 +497,8 @@
                 "1b0207fcf5b4f192",
                 "f4bbd4236257586d",
                 "4e1b312dd6d8e92b",
-                "49982542cd983bf1"
+                "49982542cd983bf1",
+                "aa90923185db1658"
             ]
         ]
     },
@@ -619,7 +620,7 @@
         "width": 0,
         "height": 0,
         "passthru": false,
-        "label": "Help",
+        "label": "About",
         "tooltip": "",
         "color": "",
         "bgcolor": "",
@@ -749,7 +750,7 @@
         "width": 0,
         "height": 0,
         "name": "",
-        "label": "Help",
+        "label": "About",
         "format": "",
         "layout": "col-center",
         "className": "",
@@ -1098,7 +1099,7 @@
         "to": "",
         "reg": false,
         "x": 840,
-        "y": 1140,
+        "y": 1180,
         "wires": [
             [
                 "ba9752e294963fae"
@@ -1111,7 +1112,7 @@
         "z": "ae162ba06c86eb91",
         "name": "",
         "group": "8760a5fd5ea8e2bf",
-        "order": 7,
+        "order": 8,
         "width": 0,
         "height": 0,
         "passthru": false,
@@ -1126,7 +1127,7 @@
         "topic": "topic",
         "topicType": "msg",
         "x": 660,
-        "y": 1140,
+        "y": 1180,
         "wires": [
             [
                 "64f6b89310fc1066",
@@ -1141,7 +1142,7 @@
         "name": "",
         "events": "all",
         "x": 1020,
-        "y": 1140,
+        "y": 1180,
         "wires": [
             []
         ]
@@ -1252,7 +1253,7 @@
         "nodata": "",
         "dot": false,
         "ymin": "18",
-        "ymax": "34",
+        "ymax": "48",
         "removeOlder": "10",
         "removeOlderPoints": "",
         "removeOlderUnit": "60",
@@ -1286,7 +1287,7 @@
         "name": "",
         "info": "Create user:\n    * Fix indtast navn\n    * Fix at den gemmer.\n\nStatus\n    * Lav grafer baseret på data.\n\nSettings\n    * Tillad at skifte ønsket interval.\n\nHelp\n    * Ikke vigtig, skriv lidt tekst til hvordan det virker",
         "x": 660,
-        "y": 1180,
+        "y": 1220,
         "wires": []
     },
     {
@@ -1883,7 +1884,7 @@
         "nodata": "",
         "dot": false,
         "ymin": "18",
-        "ymax": "34",
+        "ymax": "48",
         "removeOlder": "1",
         "removeOlderPoints": "",
         "removeOlderUnit": "3600",
@@ -1927,7 +1928,7 @@
         "nodata": "",
         "dot": false,
         "ymin": "18",
-        "ymax": "34",
+        "ymax": "48",
         "removeOlder": "1",
         "removeOlderPoints": "",
         "removeOlderUnit": "86400",
@@ -1959,7 +1960,7 @@
         "type": "function",
         "z": "ae162ba06c86eb91",
         "name": "function 3",
-        "func": "let database = global.get(\"database\");\nlet currentUser = global.get(\"currentUser\");\nlet desiredTemp = global.get(\"desiredTemp\");\nlet username = global.get(\"username\");\n\ndatabase.push([username, currentUser, desiredTemp, 0]);\nglobal.set(\"database\", database);\n\nmsg.payload = database[database.length - 1][1];\n\nreturn msg;",
+        "func": "let database = global.get(\"database\");\nlet currentUser = global.get(\"currentUser\");\nlet desiredTemp = global.get(\"desiredTemp\");\nlet desiredHum = global.get(\"desiredHum\");\nlet username = global.get(\"username\");\n\ndatabase.push([username, currentUser, desiredTemp, desiredHum]);\nglobal.set(\"database\", database);\n\nmsg.payload = database[database.length - 1][1];\n\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -1967,7 +1968,7 @@
         "finalize": "",
         "libs": [],
         "x": 840,
-        "y": 1100,
+        "y": 1140,
         "wires": [
             [
                 "1f1cc73e23ebfa4f",
@@ -2051,7 +2052,7 @@
         "z": "ae162ba06c86eb91",
         "name": "",
         "group": "8760a5fd5ea8e2bf",
-        "order": 5,
+        "order": 6,
         "width": 0,
         "height": 0,
         "passthru": false,
@@ -2066,7 +2067,7 @@
         "topic": "topic",
         "topicType": "msg",
         "x": 660,
-        "y": 1100,
+        "y": 1140,
         "wires": [
             [
                 "4e2518629fcb366a"
@@ -2101,7 +2102,7 @@
             "a54ad6d69372effd"
         ],
         "x": 955,
-        "y": 1100,
+        "y": 1140,
         "wires": []
     },
     {
@@ -2180,7 +2181,8 @@
         "wires": [
             [
                 "09ba5580cc66a349",
-                "5f4a93124a4c82d7"
+                "5f4a93124a4c82d7",
+                "815574fb7322c1e3"
             ]
         ]
     },
@@ -2586,40 +2588,34 @@
         "wires": []
     },
     {
-        "id": "6f86f18419a4ef3c",
-        "type": "inject",
+        "id": "aa90923185db1658",
+        "type": "function",
         "z": "ae162ba06c86eb91",
-        "name": "",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "5",
-        "crontab": "",
-        "once": false,
-        "onceDelay": "2",
-        "topic": "",
-        "payload": "27.123",
-        "payloadType": "str",
-        "x": 1260,
-        "y": 180,
+        "name": "Find user and preset",
+        "func": "var newMsg = { payload: msg.payload.length };\n\nlet str = msg.payload;\nconst temp = str.split(\";\")[1];\nconst hum = str.split(\";\")[2];\n\nmsg.payload = temp;\nnewMsg.payload = hum;\n\nreturn [msg, newMsg]",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 780,
+        "y": 40,
         "wires": [
             [
-                "40749845bb7a56e6"
+                "a75d82f4e9eb6766"
+            ],
+            [
+                "ffbd260251bb61c0"
             ]
         ]
     },
     {
-        "id": "40749845bb7a56e6",
+        "id": "a75d82f4e9eb6766",
         "type": "mqtt out",
         "z": "ae162ba06c86eb91",
-        "name": "",
-        "topic": "s183668@student.dtu.dk/SensorToCloudTemp",
+        "name": "Send new temp to sensor",
+        "topic": "s183668@student.dtu.dk/CloudToSensorTemp",
         "qos": "2",
         "retain": "",
         "respTopic": "",
@@ -2628,45 +2624,16 @@
         "correl": "",
         "expiry": "",
         "broker": "fdcb03fd266d8483",
-        "x": 1520,
-        "y": 180,
+        "x": 1110,
+        "y": 20,
         "wires": []
     },
     {
-        "id": "2b1c30dbb524c237",
-        "type": "inject",
-        "z": "ae162ba06c86eb91",
-        "name": "",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "5",
-        "crontab": "",
-        "once": false,
-        "onceDelay": "2",
-        "topic": "",
-        "payload": "90",
-        "payloadType": "str",
-        "x": 1250,
-        "y": 220,
-        "wires": [
-            [
-                "2bf31e621a49c53e"
-            ]
-        ]
-    },
-    {
-        "id": "2bf31e621a49c53e",
+        "id": "ffbd260251bb61c0",
         "type": "mqtt out",
         "z": "ae162ba06c86eb91",
-        "name": "",
-        "topic": "s183668@student.dtu.dk/SensorToCloudHum",
+        "name": "Send new hum to sensor",
+        "topic": "s183668@student.dtu.dk/CloudToSensorHum",
         "qos": "2",
         "retain": "",
         "respTopic": "",
@@ -2675,8 +2642,52 @@
         "correl": "",
         "expiry": "",
         "broker": "fdcb03fd266d8483",
-        "x": 1520,
-        "y": 220,
+        "x": 1110,
+        "y": 60,
         "wires": []
+    },
+    {
+        "id": "815574fb7322c1e3",
+        "type": "ui_text_input",
+        "z": "ae162ba06c86eb91",
+        "name": "",
+        "label": "Humidity",
+        "tooltip": "",
+        "group": "8760a5fd5ea8e2bf",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "mode": "number",
+        "delay": "100",
+        "topic": "topic",
+        "sendOnBlur": true,
+        "className": "",
+        "topicType": "msg",
+        "x": 660,
+        "y": 1100,
+        "wires": [
+            [
+                "30ce63909759df4a"
+            ]
+        ]
+    },
+    {
+        "id": "30ce63909759df4a",
+        "type": "function",
+        "z": "ae162ba06c86eb91",
+        "name": "function 8",
+        "func": "let desiredHum = global.get(\"desiredHum\");\n\ndesiredHum = Number(msg.payload);\n\nglobal.set(\"desiredHum\", desiredHum);\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 840,
+        "y": 1100,
+        "wires": [
+            []
+        ]
     }
 ]
