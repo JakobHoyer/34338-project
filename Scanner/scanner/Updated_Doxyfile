@@ -1,0 +1,29 @@
+
+# Doxygen configuration file for Arduino project
+
+PROJECT_NAME           = "Arduino Project Documentation"
+PROJECT_BRIEF          = "Comprehensive documentation for an Arduino project."
+OUTPUT_DIRECTORY       = "./doxygen_output"
+CREATE_SUBDIRS         = YES
+OPTIMIZE_OUTPUT_FOR_C  = YES
+
+INPUT                  = C:\Users\anelh\34338-project\Scanner\sketch_jan15b\scanner.cpp C:\Users\anelh\34338-project\Scanner\sketch_jan15b\scanner.h C:\Users\anelh\34338-project\Scanner\sketch_jan15b\scanner.ino
+FILE_PATTERNS          = *.cpp *.h *.ino
+EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = NO
+EXTRACT_STATIC         = NO
+
+GENERATE_HTML          = YES
+HTML_OUTPUT            = html
+GENERATE_LATEX         = NO
+
+WARN_IF_UNDOCUMENTED = YES
+WARN_NO_PARAMDOC     = YES
+WARNINGS             = YES
+
+HAVE_DOT               = YES
+DOT_PATH               = /usr/bin/dot
+CALL_GRAPH             = YES
+CALLER_GRAPH           = YES
+
+QUIET                  = NO
