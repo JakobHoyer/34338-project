@@ -21,9 +21,11 @@
  */
 
 
-/**
- * @file scanner.ino
- * @brief Main Arduino sketch for initializing and running the project.
+/** @defgroup MainSketch Main Arduino Sketch
+ *  @{
+ *  @file scanner.ino
+ *  @brief Main Arduino sketch for initializing and running the project.
+ *  @}
  */
 
 #include <Arduino.h>

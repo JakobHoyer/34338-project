@@ -1,0 +1,5 @@
+<map id="client" name="client">
+<area shape="rect" id="Node000001" title="PubSubClient object for handling MQTT communication." alt="" coords="5,5,58,32"/>
+<area shape="rect" id="Node000002" href="$d4/d77/scanner_8cpp.html#ae24061fe2bcdf43d9a38cd0c2ecedd4c" title="Callback function for handling incoming MQTT messages." alt="" coords="106,5,175,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="58,16,90,16,90,21,58,21"/>
+</map>

@@ -1,15 +1,16 @@
 
 # Doxygen configuration file for Arduino project
 
-PROJECT_NAME           = "Arduino Project Documentation"
-PROJECT_BRIEF          = "Comprehensive documentation for an Arduino project."
+PROJECT_NAME           = "Smart Home Project Documentation"
+PROJECT_BRIEF          = "Comprehensive documentation for the project."
 OUTPUT_DIRECTORY       = "./doxygen_output"
 CREATE_SUBDIRS         = YES
 OPTIMIZE_OUTPUT_FOR_C  = YES
 
-INPUT                  = C:\Users\anelh\34338-project\Scanner\sketch_jan15b\scanner.cpp C:\Users\anelh\34338-project\Scanner\sketch_jan15b\scanner.h C:\Users\anelh\34338-project\Scanner\sketch_jan15b\scanner.ino
-FILE_PATTERNS          = *.cpp *.h *.ino
+INPUT                  = C:\Users\anelh\34338-project\Scanner\scanner\scanner.cpp C:\Users\anelh\34338-project\Scanner\scanner\scanner.h C:\Users\anelh\34338-project\Scanner\scanner\scanner.ino
+FILE_PATTERNS          = *.ino *.cpp *.h 
 EXTRACT_ALL            = YES
+EXTENSION_MAPPING = ino=C++
 EXTRACT_PRIVATE        = NO
 EXTRACT_STATIC         = NO
 
@@ -22,7 +23,7 @@ WARN_NO_PARAMDOC     = YES
 WARNINGS             = YES
 
 HAVE_DOT               = YES
-DOT_PATH               = /usr/bin/dot
+DOT_PATH               = C:\Users\anelh\Downloads\windows_10_cmake_Release_Graphviz-12.2.1-win64\Graphviz-12.2.1-win64\bin
 CALL_GRAPH             = YES
 CALLER_GRAPH           = YES
 
