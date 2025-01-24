@@ -1,5 +1,5 @@
 <map id="scanner.h" name="scanner.h">
-<area shape="rect" id="Node000001" title="Header file for the scanner module in our smart home project." alt="" coords="304,5,382,32"/>
+<area shape="rect" id="Node000001" title="Header file for the scanner module in our IoT project. All variables are made as extern to avoid mult..." alt="" coords="304,5,382,32"/>
 <area shape="rect" id="Node000002" title=" " alt="" coords="5,80,60,107"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="304,30,204,51,76,82,74,77,203,46,303,25"/>
 <area shape="rect" id="Node000003" title=" " alt="" coords="84,80,176,107"/>

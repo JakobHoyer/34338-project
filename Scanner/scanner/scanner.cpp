@@ -1,7 +1,7 @@
 // scanner.cpp
 /**
  * @file scanner.cpp
- * @brief Implementation file for the scanner module in an Arduino project.
+ * @brief Implementation file for the scanner module in our IoT project. All functions that are used in the main file can be seen here.
  */
 
 #include <Arduino.h>

@@ -24,7 +24,8 @@
 /** @defgroup MainSketch Main Arduino Sketch
  *  @{
  *  @file scanner.ino
- *  @brief Main Arduino sketch for initializing and running the project.
+ *  @brief  This code is used for sending UID numbers from the RFID reader to the server, that then displays the current temperature and desired temperature on a LCD display
+ *          
  *  @}
  */
 

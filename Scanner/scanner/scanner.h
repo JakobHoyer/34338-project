@@ -1,6 +1,6 @@
 /**
  * @file scanner.h
- * @brief Header file for the scanner module in our smart home project.
+ * @brief Header file for the scanner module in our IoT project. All variables are made as extern to avoid multiple declarations in other files.
  */
 
 #ifndef SCANNER_H

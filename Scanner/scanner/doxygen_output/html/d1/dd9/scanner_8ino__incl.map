@@ -1,8 +1,8 @@
 <map id="scanner.ino" name="scanner.ino">
-<area shape="rect" id="Node000001" title="Main Arduino sketch for initializing and running the project." alt="" coords="248,5,337,32"/>
+<area shape="rect" id="Node000001" title="This code is used for sending UID numbers from the RFID reader to the server, that then displays the ..." alt="" coords="248,5,337,32"/>
 <area shape="rect" id="Node000002" title=" " alt="" coords="204,80,280,107"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="286,34,261,69,257,66,281,31"/>
-<area shape="rect" id="Node000003" href="$db/d62/scanner_8h.html" title="Header file for the scanner module in our smart home project." alt="" coords="304,80,382,107"/>
+<area shape="rect" id="Node000003" href="$db/d62/scanner_8h.html" title="Header file for the scanner module in our IoT project. All variables are made as extern to avoid mult..." alt="" coords="304,80,382,107"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="304,31,328,66,324,69,299,34"/>
 <area shape="rect" id="Node000004" title=" " alt="" coords="5,155,60,181"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="304,107,293,109,185,132,76,156,74,151,184,126,292,104,303,102"/>
