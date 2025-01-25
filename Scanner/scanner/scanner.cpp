@@ -184,14 +184,70 @@ void callback(char *byteArraytopic, byte *byteArrayPayload, unsigned int length)
   Serial.print(topic);
   Serial.println("] ");
 
-  if (topic == mqtt_topic) {  
-    payload = "";             
+  // Check which topic is received among the subscribed topics (see reconnect function to see all subscribed topics).
+  if (topic == mqtt_topic) {
+    payload = "";
     for (int i = 0; i < length; i++) {
       payload += (char)byteArrayPayload[i];
     }
-    String name = getValue(payload, ';', 0); 
+    Serial.println(payload);  // print the current payload in the serial monitor for debugging.
+    lcd.clear();              // clear display.
+    String name = getValue(payload, ';', 0);
     String temp = getValue(payload, ';', 1);
     String hum = getValue(payload, ';', 2);
+    Serial.println(hum);
+    lcd.setCursor(8, 1);
+    lcd.print(hum);
+    Serial.println(temp);
+    lcd.setCursor(0, 1);
+    lcd.print(temp);
+    Serial.println(name);
+    lcd.setCursor(0, 0);
+    lcd.print("                ");
+    lcd.setCursor(0, 0);
+    lcd.print(name);
+  }
+  // else if the topic is of type ST (sensor temperature), then display the current temperature from the sensor.
+  else if (topic == mqtt_topic_ST) {
+    payload = "";
+    for (int i = 0; i < length; i++) {
+      payload += (char)byteArrayPayload[i];
+    }
+    float payloadFloat = payload.toFloat();  // Convert string to float.
+    char paybuffer[10];                      // Buffer to store formatted value.
+    dtostrf(payloadFloat, 4, 1, paybuffer);  // Convert float to string with 1 decimal.
+    lcd.setCursor(3, 1);
+    lcd.print(paybuffer);
+  }
+  // else if the topic is of type SH (Sensor humidity), then display the current humidity from the sensor.
+  else if (topic == mqtt_topic_SH) {
+    payload = "";
+    for (int i = 0; i < length; i++) {
+      payload += (char)byteArrayPayload[i];
+    }
+    float payloadFloat = payload.toFloat();  // Convert string to float.
+    char paybuffer[10];                      // Buffer to store formatted value.
+    dtostrf(payloadFloat, 4, 1, paybuffer);  // Convert float to string with 1 decimal.
+    lcd.setCursor(11, 1);
+    lcd.print(paybuffer);
+  }
+  // else if the topic is of type CT (Cloud temperature), then display the desired temperature from the cloud.
+  else if (topic == mqtt_topic_CT) {
+    payload = "";
+    for (int i = 0; i < length; i++) {
+      payload += (char)byteArrayPayload[i];
+    }
+    lcd.setCursor(0, 1);
+    lcd.print(payload);
+  }
+  // else if the topic is of type CH (Cloud humidity), then display the desired humidity from the cloud.
+  else if (topic == mqtt_topic_CH) {
+    payload = "";
+    for (int i = 0; i < length; i++) {
+      payload += (char)byteArrayPayload[i];
+    }
+    lcd.setCursor(8, 1);
+    lcd.print(payload);
   }
 }
 
@@ -228,8 +284,7 @@ void reconnect() {
       client.subscribe(mqtt_topic_SH);
       client.subscribe(mqtt_topic_CT);
       client.subscribe(mqtt_topic_CH);
-    } 
-    else {
+    } else {
       Serial.print("failed, rc=");
       Serial.print(client.state());
       Serial.println(" try again in 5 seconds");
