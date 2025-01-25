@@ -2,7 +2,7 @@
 /**
  * @file scanner.cpp
  * @brief Implementation file for the scanner module in our IoT project. All functions that are used in the main file can be seen here.
- * @author Anel Hodza and Søren Zeppeke 
+ * @author Anel Hodza and Søren Zepernick  
  */
 
 #include <Arduino.h>

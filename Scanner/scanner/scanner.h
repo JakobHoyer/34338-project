@@ -1,7 +1,7 @@
 /**
  * @file scanner.h
  * @brief Header file for the scanner module in our IoT project. All variables are made as extern to avoid multiple declarations in other files.
- * @author Anel Hodza and Søren Zeppeke 
+ * @author Anel Hodza and Søren Zepernick  
  */
 
 #ifndef SCANNER_H
