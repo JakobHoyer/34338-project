@@ -178,7 +178,21 @@ void callback(char *byteArraytopic, byte *byteArrayPayload, unsigned int length)
    * @param byteArrayPayload Payload of the received message.
    * @param length Length of the payload.
    */
-  // Function implementation here.
+  String topic;
+  topic = String(byteArraytopic);
+  Serial.print("Message arrived [");
+  Serial.print(topic);
+  Serial.println("] ");
+
+  if (topic == mqtt_topic) {  
+    payload = "";             
+    for (int i = 0; i < length; i++) {
+      payload += (char)byteArrayPayload[i];
+    }
+    String name = getValue(payload, ';', 0); 
+    String temp = getValue(payload, ';', 1);
+    String hum = getValue(payload, ';', 2);
+  }
 }
 
 void setup_wifi() {
@@ -214,7 +228,8 @@ void reconnect() {
       client.subscribe(mqtt_topic_SH);
       client.subscribe(mqtt_topic_CT);
       client.subscribe(mqtt_topic_CH);
-    } else {
+    } 
+    else {
       Serial.print("failed, rc=");
       Serial.print(client.state());
       Serial.println(" try again in 5 seconds");
