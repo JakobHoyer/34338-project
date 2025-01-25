@@ -61,11 +61,32 @@ void loop() {
     return; // Return if no new card is detected.
   }
 
+  // verifies that card is read correctly.
+  if (!rfid.PICC_ReadCardSerial())
+    return;  
+
   // Print the UID of the scanned RFID card.
   Serial.print(F("RFID UID: "));
+  Serial.print(F("In hex: "));
   printHex(rfid.uid.uidByte, rfid.uid.size);
   Serial.println();
+  Serial.print(F("In dec: "));
+  printDec(rfid.uid.uidByte, rfid.uid.size);
+  Serial.println();
+
+  // Puts the scanned UID number into a string to be transmitted to the cloud in hexidecimal format.
+  for (int i = 0; i < 4; i++) {
+    sprintf(&hexString[i * 2], "%02X", nuidPICC[i]);
+  }
+
+  // 0 termination 
+  hexString[8] = '\0';
+  // publish the message to the cloud
+  client.publish("s183668@student.dtu.dk/pub", hexString);
 
   // Halt the RFID card to allow scanning of new cards.
   rfid.PICC_HaltA();
+
+  // Stop encryption on PCD
+  rfid.PCD_StopCrypto1();
 }
