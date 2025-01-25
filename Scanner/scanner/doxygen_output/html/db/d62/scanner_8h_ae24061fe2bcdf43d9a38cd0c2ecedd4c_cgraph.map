@@ -1,0 +1,5 @@
+<map id="callback" name="callback">
+<area shape="rect" id="Node000001" title="Callback function for handling incoming MQTT messages." alt="" coords="5,5,75,32"/>
+<area shape="rect" id="Node000002" href="$d4/d77/scanner_8cpp.html#a57a7c83d25ae8dfb12c646d9adf3f2ba" title="Extracts a specific value from a delimited string." alt="" coords="123,5,194,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="75,16,107,16,107,21,75,21"/>
+</map>

@@ -25,7 +25,7 @@
  *  @{
  *  @file scanner.ino
  *  @brief  This code is used for sending UID numbers from the RFID reader to the server, that then displays the current temperature and desired temperature on a LCD display
- *          
+ *  @author Anel Hodza and Søren Zeppeke         
  *  @}
  */
 
