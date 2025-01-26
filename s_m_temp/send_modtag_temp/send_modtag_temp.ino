@@ -429,7 +429,7 @@ void neutral() {
 /**
  * @brief Moves the servo to 180 degrees position.
  * 
- * This might represent a fully open or a fully closed valve, depending on mechanical setup.
+ * This represent a fully open valve.
  */
 void turnServo180() {
   if (servoIndex != -1) {
@@ -441,7 +441,7 @@ void turnServo180() {
 /**
  * @brief Moves the servo to 0 degrees position.
  * 
- * This might represent a fully open or fully closed valve, depending on mechanical setup.
+ * This represent a fully closed valve.
  */
 void turnServo0() {
   if (servoIndex != -1) {
