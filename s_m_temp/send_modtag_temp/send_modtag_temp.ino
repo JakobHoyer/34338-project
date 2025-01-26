@@ -1,155 +1,215 @@
-//////////// Initiering ///////////
+/**
+ * @file send_modtag_temp.ino
+ * @brief This file contains the code for Temperture sensor and control module.
+ * 
+ * The code connects to WiFi, subscribes to MQTT topics, reads sensor data (temperature prefrence and humidity prefrence), 
+ * controls a servo motor, indicates wether to heat or cool the room and indicates temperature status using an RGB LED.
+ * @author Abbas Heidari, Daniel Heiðar Qasemiani & Jakob Høyer Madsen
+ */
 
-//inkluderer nødvendige bibloteker
-#include <ESP8266WiFi.h>
-#include <PubSubClient.h>
-#include <ESP8266HTTPClient.h>
-#include <DHT.h>
-#include "ESP8266_ISR_Servo.h"
+/** 
+ * --------------------------------------------------------------------------------------------------------------------
+ * Includes & Definitions
+ * --------------------------------------------------------------------------------------------------------------------
+ */
 
-#define SERVO_PIN D7  // GPIO pin for servo
+#include <ESP8266WiFi.h>        ///< WiFi library for ESP8266
+#include <PubSubClient.h>       ///< MQTT library
+#include <ESP8266HTTPClient.h>  ///< HTTP client library for ESP8266
+#include <DHT.h>                ///< Library for DHT temperature/humidity sensors
+#include "ESP8266_ISR_Servo.h"  ///< Non-blocking Servo library for ESP8266
+
+/// GPIO pin for the servo
+#define SERVO_PIN D7
+
+/// GPIO pin for the DHT sensor
 #define DHT_PIN D2
+/// DHT sensor type
 #define DHT_TYPE DHT11
 
-DHT dht(DHT_PIN, DHT_TYPE);
+DHT dht(DHT_PIN, DHT_TYPE);  ///< DHT sensor object
 
-// Definerer id og password til netværksforbindelse som NodeMCU anvender
-const char* ssid = "Jakob - iPhone";    //Indsæt navnet på jeres netværk her
-const char* password = "kodekodeadad";  //Indsæt password her
+/**
+ * --------------------------------------------------------------------------------------------------------------------
+ * WiFi & MQTT Configuration
+ * --------------------------------------------------------------------------------------------------------------------
+ */
+/// WiFi SSID
+const char* ssid = "Jakob - iPhone";
+/// WiFi Password
+const char* password = "kodekodeadad";
 
-//const char* ssid = "Abisu";         //Indsæt navnet på jeres netværk her
-//const char* password = "00000000";  //Indsæt password her
+// Alternative network configuration (commented out)
+// const char* ssid = "Abisu";
+// const char* password = "00000000";
 
-// Definerer information til mqtt serveren
-const char* mqtt_server = "maqiatto.com";          //navn på mqtt-server. Find navnet på cloudmqtt-hjemmesiden
-const int mqtt_port = 1883;                        // Definerer porten
-const char* mqtt_user = "s183668@student.dtu.dk";  // Definerer mqtt-brugeren
-const char* mqtt_pass = "kodekodeadad";            // Definerer koden til mqtt-brugeren
+/// MQTT server address
+const char* mqtt_server = "maqiatto.com";
+/// MQTT server port
+const int mqtt_port = 1883;
+/// MQTT username
+const char* mqtt_user = "s183668@student.dtu.dk";
+/// MQTT password
+const char* mqtt_pass = "kodekodeadad";
+
+/// MQTT topic for receiving desired temperature from the cloud
 const char* mqtt_topic_temp = "s183668@student.dtu.dk/CloudToSensorTemp";
+/// MQTT topic for receiving desired humidity from the cloud
 const char* mqtt_topic_hum = "s183668@student.dtu.dk/CloudToSensorHum";
-//
 
-String payload;  // Definerer variablen 'payload' i det globale scope (payload er navnet på besked-variablen)
+/**
+ * @brief Global string for storing the received MQTT payload.
+ */
+String payload;
 
-//Important, use pwm capable pins
+/**
+ * --------------------------------------------------------------------------------------------------------------------
+ * Pin Assignments & Sensor Variables
+ * --------------------------------------------------------------------------------------------------------------------
+ */
+/// Red LED pin (PWM capable)
 const int RedPin = D3;
+/// Green LED pin (PWM capable)
 const int GreenPin = D6;
+/// Blue LED pin (PWM capable)
 const int BluePin = D5;
 
-//Important, use analog pin to read temperture.
+/// Analog pin used to read temperature
 const int TempPin = A0;
 
-// The used MCU Nude, has max voltage of 3.3v, it doesnt matter, it is for the equation.
-const float referenceVoltage = 3;
+/// The reference voltage for the ADC calculations (for an ESP8266 NodeMCU board, ~3.0–3.3V)
+const float referenceVoltage = 3.3;
 
-// Initialisation of variables.
-int BlueIntensity = 0;
-int GreenIntensity = 0;
-int sensorValue = 0;
-float voltage = 0.0;
-float Temp = 0.0;
+/**
+ * @brief Global initilation of measured or calculated sensor values.
+ */
+int sensorValue = 0;        ///< Latest ADC reading from TempPin
+float voltage = 0.0;        ///< Calculated voltage from ADC
+float Temp = 0.0;           ///< Latest temperature reading
+float Temp_Avg = 0.0;       ///< Average temperature reading
+float received_temp = 0.0;  ///< Desired temperature received from MQTT
 
-// Global servo index variable
+/**
+ * @brief Global initilation of RGB LED color intensities.
+ */
+int BlueIntensity = 0;   ///< Intensity for the blue channel
+int GreenIntensity = 0;  ///< Intensity for the green channel
+
+/**
+ * @brief Global initilation of default temperature bounds around the desired temperature.
+ */
+float temp_pref_low = 21.0;   ///< Lower bound for preferred temperature
+float temp_pref_high = 23.0;  ///< Upper bound for preferred temperature
+
+/**
+ * @brief Indices and states used for servo control.
+ */
 int servoIndex = -1;
-
-//to account for nois, we use avarge temp reading.
-float Temp_Avg = 0;
-
-float received_temp = 0;
-
 int lastState = 0;
 int state = 0;
 
-// Default prefered temperture
-float temp_pref_low = 21.0, temp_pref_high = 23.0;
+/**
+ * --------------------------------------------------------------------------------------------------------------------
+ * MQTT & WiFi Client Objects
+ * --------------------------------------------------------------------------------------------------------------------
+ */
+WiFiClient espClient;            ///< WiFi client object
+PubSubClient client(espClient);  ///< MQTT client object
 
-// Opretter en placeholder for callback-funktionen til brug senere. Den rigtige funktion ses længere nede.
+/**
+ * --------------------------------------------------------------------------------------------------------------------
+ * Function Prototypes
+ * --------------------------------------------------------------------------------------------------------------------
+ */
 void callback(char* byteArraytopic, byte* byteArrayPayload, unsigned int length);
+void setup_wifi();
+void reconnect();
+float Temp_sens();
+void Temp_interval(float temp_pref);
+void LED_Indication(float current_temp);
+void fanturnon();
+void radiatorturnon();
+void neutral();
+void turnServo180();
+void turnServo0();
 
-// Opretter en klient der kan forbinde til en specifik internet IP adresse.
-WiFiClient espClient;  // Initialiserer wifi bibloteket ESP8266Wifi, som er inkluderet under "nødvendige bibloteker"
-
-// Opretter forbindelse til mqtt klienten:
-PubSubClient client(espClient);  // Initialiserer bibloteket for at kunne modtage og sende beskeder til mqtt. Den henter fra definerede mqtt server og port. Den henter fra topic og beskeden payload
-
-/////// FUNKTIONSOPSÆTNING SLUT /////////
-
-//
-//
-//
-//
-//
-//
-
-///////// CALLBACKFUNKTION ////////
-
-// Definerer callback funktionen der modtager beskeder fra mqtt
-// OBS: den her funktion kører hver gang MCU'en modtager en besked via mqtt
+/**
+ * @brief MQTT callback function.
+ * 
+ * This function is called whenever a new message is received on a subscribed topic.
+ * It processes the incoming topic and payload, updating relevant global variables 
+ * and taking actions such as controlling a servo based on the received temperature command.
+ * 
+ * @param byteArraytopic Topic of the received MQTT message.
+ * @param byteArrayPayload Payload of the received MQTT message.
+ * @param length Length of the payload.
+ */
 void callback(char* byteArraytopic, byte* byteArrayPayload, unsigned int length) {
-
-  // Konverterer indkomne besked (topic) til en string:
-  String topic;
-  topic = String(byteArraytopic);
+  String topic = String(byteArraytopic);
   Serial.print("Message arrived [");
   Serial.print(topic);
   Serial.println("] ");
-  // Konverterer den indkomne besked (payload) fra en array til en string:
-  // Topic == Temperaturmaaler, Topic == Kraftsensor
-  if (topic == mqtt_topic_temp) {  // OBS: der subscribes til et topic nede i reconnect-funktionen. I det her tilfælde er der subscribed til "Test". Man kan subscribe til alle topics ved at bruge "#"
-    payload = "";                  // Nulstil payload variablen så forloopet ikke appender til en allerede eksisterende payload
+
+  // If the received topic matches the desired temperature topic
+  if (topic == mqtt_topic_temp) {
+    // Clear the old payload
+    payload = "";
     for (int i = 0; i < length; i++) {
       payload += (char)byteArrayPayload[i];
     }
 
-    // Modtagne temperature som Konverteres fra string til float:
+    // Convert the received string to a float
     received_temp = payload.toFloat();
     Serial.print("Received temperature: ");
     Serial.println(received_temp);
 
-    if (received_temp > 0) {  // Sikrer at temperaturen er valid
+    // If the temperature is valid, adjust the preference range
+    if (received_temp > 0) {
       Temp_interval(received_temp);
     }
 
     Serial.println(payload);
-    client.publish("mqtt", String(payload).c_str());  // Publish besked fra MCU til et valgt topic. Husk at subscribe til topic'et i NodeRed.
+    client.publish("mqtt", String(payload).c_str());
   }
-
+  // If the received topic matches the desired humidity topic
   else if (topic == mqtt_topic_hum) {
-    payload = "";  // Nulstil payload variablen så forloopet ikke appender til en allerede eksisterende payload
+    payload = "";
     for (int i = 0; i < length; i++) {
       payload += (char)byteArrayPayload[i];
     }
 
-    // humidity kode
     float received_hum = payload.toFloat();
     Serial.print("Received humidity: ");
     Serial.println(received_hum);
   }
 }
 
-// Opretter forbindelse til WiFi
+/**
+ * @brief Connects the ESP8266 to the specified WiFi network.
+ * 
+ * Tries to connect to the WiFi network within a given timeout period. 
+ * Prints debug information to the Serial monitor.
+ */
 void setup_wifi() {
-  // Forbinder til et WiFi network
   Serial.println();
   Serial.print("Connecting to ");
   Serial.println(ssid);
 
   WiFi.begin(ssid, password);
   unsigned long startAttemptTime = millis();
-  while (WiFi.status() != WL_CONNECTED && millis() - startAttemptTime < 15000) {
+  while (WiFi.status() != WL_CONNECTED && (millis() - startAttemptTime) < 15000) {
     delay(500);
     Serial.print(".");
   }
+
   if (WiFi.status() != WL_CONNECTED) {
-    Serial.println("Kunne ikke forbinde til WiFi!");
+    Serial.println("Could not connect to WiFi!");
     return;
   }
   if (payload.length() == 0) {
-    Serial.println("Tom payload modtaget!");
+    Serial.println("Empty payload received!");
     return;
   }
-
-
 
   Serial.println("");
   Serial.println("WiFi connected");
@@ -157,40 +217,42 @@ void setup_wifi() {
   Serial.println(WiFi.localIP());
 }
 
-
-// Opretter forbindelse til mqtt server. Dette gentages ved manglende forbindelse til WiFi, server osv.
+/**
+ * @brief Attempts to reconnect to the MQTT broker if the connection is lost.
+ * 
+ * This function blocks until the device is successfully reconnected to the MQTT broker,
+ * subscribing again to the necessary topics after reconnection.
+ */
 void reconnect() {
-  // Fortsætter til forbindelsen er oprettet
   while (!client.connected()) {
-    Serial.print("Forsøger at oprette MQTT forbindelse...");
+    Serial.print("Attempting MQTT connection...");
 
-    if (client.connect("sensor", mqtt_user, mqtt_pass)) {  // Forbinder til klient med mqtt bruger og password
+    // Attempt to connect to the MQTT broker with credentials
+    if (client.connect("sensor", mqtt_user, mqtt_pass)) {
       Serial.println("connected");
-      // Derudover subsribes til topic "Test" hvor NodeMCU modtager payload beskeder fra
+
+      // Subscribe to relevant MQTT topics
       client.subscribe(mqtt_topic_hum);
       client.subscribe(mqtt_topic_temp);
-      // Der kan subscribes til flere specifikke topics
-      //client.subscribe("Test1");
-      // Eller til samtlige topics ved at bruge '#' (Se Power Point fra d. 18. marts)
-      // client.subscribe("#");
-
-      // Hvis forbindelsen fejler køres loopet igen efter 5 sekunder indtil forbindelse er oprettet
     } else {
       Serial.print("failed, rc=");
       Serial.print(client.state());
       Serial.println(" try again in 5 seconds");
-      // Venter 5 sekunder før den prøver igen
       delay(5000);
     }
   }
 }
 
+/**
+ * @brief Arduino setup function, runs once at startup.
+ * 
+ * Initializes serial communication, servo, pin modes, WiFi, MQTT client, and DHT sensor.
+ */
 void setup() {
-
-  Serial.begin(115200);  // Åbner serial porten og sætter data raten til 115200 baud
+  Serial.begin(115200);
   delay(1000);
 
-  // Initialize servo
+  // Initialize the servo using the ISR-based library
   servoIndex = ISR_Servo.setupServo(SERVO_PIN, 500, 2500);
   if (servoIndex == -1) {
     Serial.println("Error: Could not set up the servo.");
@@ -206,136 +268,131 @@ void setup() {
   pinMode(D4, OUTPUT);
 
   Serial.println("ESP8266 ADC Receiver Started...");
-  setup_wifi();                              // Kører WiFi loopet og forbinder herved.
-  client.setServer(mqtt_server, mqtt_port);  // Forbinder til mqtt serveren (defineret længere oppe)
-  client.setCallback(callback);              // Ingangsætter den definerede callback funktion hver gang der er en ny besked på den subscribede "cmd"- topic
 
+  // Connect to WiFi
+  setup_wifi();
 
+  // Configure MQTT server and callback
+  client.setServer(mqtt_server, mqtt_port);
+  client.setCallback(callback);
+
+  // Initialize DHT sensor
   dht.begin();
   float humidity = dht.readHumidity();
   Serial.print("Air humidity: ");
   Serial.println(humidity);
 }
-//////// SETUP SLUT ////////
 
-//
-//
-//
-//
-//
-//
-
-/////// LOOP /////////
-
+/**
+ * @brief Arduino loop function, runs continuously.
+ * 
+ * Maintains the MQTT connection, reads temperature and humidity, and controls 
+ * fan, radiator, and servo based on the measured and desired temperature.
+ */
 void loop() {
-  // Hvis der opstår problemer med forbindelsen til mqtt broker oprettes forbindelse igen ved at køre client loop
-  /*
-  if (turn) {
-    Serial.print("Turn = ");
-    Serial.println(turn);
-    turnServo180();
-  } else {
-    turnServo0();
-    Serial.print("Turn2 = ");
-    Serial.println(turn);
-  }
-  turn = !turn;
-*/
-
-
   if (!client.connected()) {
     reconnect();
   }
   client.loop();
+
+  // Read and publish temperature
   float temp = Temp_sens();
-  String tempStr = String(temp, 2);  // Konverter float til string
+  String tempStr = String(temp, 2);
+  client.publish("s183668@student.dtu.dk/SensorToCloudTemp", tempStr.c_str());
 
-  client.publish("s183668@student.dtu.dk/SensorToCloudTemp", tempStr.c_str());  // Konverter til C-streng
-
+  // Read and publish humidity
   float humidity = dht.readHumidity();
   if (isnan(humidity)) {
     Serial.println("Error: Failed to read humidity!");
     return;
   }
   String humidityStr = String(humidity, 2);
-
   client.publish("s183668@student.dtu.dk/SensorToCloudHum", humidityStr.c_str());
 
-  //fane kode
-
+  // Control fan (Blue LED) or radiator(Servo and Red led) based on measured vs. desired temperature
   if (temp >= received_temp + 2) {
-    Serial.println("Varm");
+    Serial.println("Too Warm");
     fanturnon();
-    Serial.println("turn1");
-    //ISR_Servo.setPosition(servoIndex, 0);
+    Serial.println("Fan on");
     turnServo0();
-
   } else if (temp <= received_temp - 2) {
-    Serial.println("Kold");
+    Serial.println("Too Cold");
     radiatorturnon();
-    Serial.println("turn");
-    //ISR_Servo.setPosition(servoIndex, 180);
+    Serial.println("Radiator on");
     turnServo180();
-
   } else {
     Serial.println("Neutral");
     neutral();
   }
 
-
   delay(10);
 }
 
+/**
+ * @brief Reads and averages temperature from the ADC pin.
+ * 
+ * Reads the ADC multiple times, applies a mapping from voltage to temperature, 
+ * updates the LED indication based on the measured temperature, and returns the average temperature.
+ * 
+ * @return The averaged temperature in °C.
+ */
 float Temp_sens() {
   Temp_Avg = 0;
   for (int i = 0; i < 20; i++) {
     sensorValue = analogRead(TempPin);
-    voltage = sensorValue * 3.0 / 1023.0;
-    Temp = voltage / 0.01;
-    //Serial.println(Temp);
-    Temp_Avg = Temp_Avg + Temp;
+    voltage = sensorValue * referenceVoltage / 1023.0;
+    Temp = voltage / 0.01;  // Convert voltage to temperature (based on a specific sensor equation)
+    Temp_Avg += Temp;
     LED_Indication(Temp);
     delay(100);
   }
-  Temp = (Temp_Avg / 20);
+  Temp = (Temp_Avg / 20.0);
   Serial.print("Temperature: ");
   Serial.println(Temp);
   return Temp;
 }
 
-//The desired temperture interval
+/**
+ * @brief Adjusts the preferred temperature interval.
+ * 
+ * Given a desired temperature, this function sets the lower and upper 
+ * bounds for comfortable temperature range (±2°C around desired temperature).
+ * 
+ * @param temp_pref The desired temperature setpoint.
+ */
 void Temp_interval(float temp_pref) {
   temp_pref_low = temp_pref - 2;
   temp_pref_high = temp_pref + 2;
 }
 
+/**
+ * @brief Controls the RGB LED to reflect how the current temperature compares to the desired range.
+ * 
+ * - Green when within the preferred range.
+ * - Blue gradient when below the preferred range.
+ * - Red/Orange gradient when above the preferred range.
+ * 
+ * @param current_temp The current measured temperature.
+ */
 void LED_Indication(float current_temp) {
-  // green when in prefered temp range
-  if (current_temp >= received_temp - 2 && current_temp <= received_temp + 2) {
+  if (current_temp >= temp_pref_low && current_temp <= temp_pref_high) {
+    // Within preferred range, Green
     analogWrite(RedPin, 0);
     analogWrite(GreenPin, 255);
     analogWrite(BluePin, 0);
-  }
-
-  // when lower than prefered (mix of green and blue when between -5 and lower preference)
-  else if (current_temp < received_temp - 2) {
-    // Intensity of blue
-    BlueIntensity = map(current_temp, received_temp - 2 - 5, received_temp - 2, 255, 0);
+  } else if (current_temp < temp_pref_low) {
+    // Below preferred range, Blue/Green mix
+    BlueIntensity = map(current_temp, (temp_pref_low - 5), (temp_pref_low), 255, 0);
     BlueIntensity = constrain(BlueIntensity, 0, 255);
-
-    //Intensisty of green
-    GreenIntensity = map(current_temp, received_temp - 2, received_temp - 2 - 5, 255, 0);
+    GreenIntensity = map(current_temp, (temp_pref_low), (temp_pref_low - 5), 255, 0);
     GreenIntensity = constrain(GreenIntensity, 0, 255);
 
     analogWrite(RedPin, 0);
     analogWrite(GreenPin, GreenIntensity);
     analogWrite(BluePin, BlueIntensity);
-  }
-
-  // When higer than prefered orange when between +5 and upper preference
-  else {
-    //Intensity of green
-    GreenIntensity = map(current_temp, received_temp + 2, received_temp + 2 + 5, 100, 0);
+  } else {
+    // Above preferred range, Red/Green mix (orange) to Red
+    GreenIntensity = map(current_temp, (temp_pref_high), (temp_pref_high + 5), 100, 0);
     GreenIntensity = constrain(GreenIntensity, 0, 100);
 
     analogWrite(RedPin, 255);
@@ -344,23 +401,36 @@ void LED_Indication(float current_temp) {
   }
 }
 
+/**
+ * @brief Turns the fan on (connected to pin D1) and turns the radiator off (pin D4).
+ */
 void fanturnon() {
   digitalWrite(D1, HIGH);
   digitalWrite(D4, LOW);
 }
 
+/**
+ * @brief Turns the radiator on (connected to pin D4) and turns the fan off (pin D1).
+ */
 void radiatorturnon() {
   digitalWrite(D4, HIGH);
   digitalWrite(D1, LOW);
 }
 
+/**
+ * @brief Turns both fan and radiator off.
+ */
 void neutral() {
   digitalWrite(D1, LOW);
   digitalWrite(D4, LOW);
   turnServo0();
 }
 
-// Function to move the servo to 180 degrees
+/**
+ * @brief Moves the servo to 180 degrees position.
+ * 
+ * This might represent a fully open or a fully closed valve, depending on mechanical setup.
+ */
 void turnServo180() {
   if (servoIndex != -1) {
     Serial.println("Servo moved to 180 degrees.");
@@ -368,7 +438,11 @@ void turnServo180() {
   }
 }
 
-// Function to move the servo to 0 degrees
+/**
+ * @brief Moves the servo to 0 degrees position.
+ * 
+ * This might represent a fully open or fully closed valve, depending on mechanical setup.
+ */
 void turnServo0() {
   if (servoIndex != -1) {
     Serial.println("Servo moved to 0 degrees.");
