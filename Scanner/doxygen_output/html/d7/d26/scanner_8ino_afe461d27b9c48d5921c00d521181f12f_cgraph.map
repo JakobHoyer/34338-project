@@ -1,9 +1,0 @@
-<map id="loop" name="loop">
-<area shape="rect" id="Node000001" title="Arduino loop function, called repeatedly." alt="" coords="5,56,51,83"/>
-<area shape="rect" id="Node000002" href="$d4/d77/scanner_8cpp.html#aafdba0c7bd093543a3709cdc3082791e" title="Prints a byte buffer as a decimal string." alt="" coords="103,5,173,32"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="50,57,92,37,95,41,52,61"/>
-<area shape="rect" id="Node000003" href="$d4/d77/scanner_8cpp.html#a198583bee13dd0c1f3c5230aae2163d9" title="Prints a byte buffer as a hexadecimal string." alt="" coords="103,56,173,83"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="51,67,87,67,87,72,51,72"/>
-<area shape="rect" id="Node000004" href="$d4/d77/scanner_8cpp.html#a4bcd6ce7d04c38f8c4ff908d1fc50f86" title="Reconnects to the MQTT server and subscribes to topics if disconnected." alt="" coords="99,107,177,133"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="52,77,95,97,92,102,50,82"/>
-</map>

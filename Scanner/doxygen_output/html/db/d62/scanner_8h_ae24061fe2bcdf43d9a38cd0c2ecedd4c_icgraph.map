@@ -1,9 +1,0 @@
-<map id="callback" name="callback">
-<area shape="rect" id="Node000001" title="Callback function for handling incoming MQTT messages." alt="" coords="254,31,323,57"/>
-<area shape="rect" id="Node000002" href="$d4/d77/scanner_8cpp.html#a8ce0b4ca0f24c43fb0e78675e4966a80" title="PubSubClient object for handling MQTT communication." alt="" coords="130,5,182,32"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="238,37,183,26,184,21,239,32"/>
-<area shape="rect" id="Node000003" href="$d4/d77/scanner_8cpp.html#ae0826a64f9d759d95eb343807931e298" title="Initializes the RFID scanner and sets up the LCD display." alt="" coords="107,56,206,83"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="239,56,207,62,206,57,238,51"/>
-<area shape="rect" id="Node000004" href="$d7/d26/scanner_8ino.html#a4fc01d736fe50cf5b977f755b675f11d" title="Arduino setup function, called once at startup." alt="" coords="5,56,59,83"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="91,72,59,72,59,67,91,67"/>
-</map>
