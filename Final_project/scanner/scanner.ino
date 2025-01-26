@@ -41,7 +41,7 @@
 void setup() {
   Serial.begin(115200);
   Serial.println(F("Starting Arduino Project"));
-
+  SPI.begin();
   setupscanner(); // Initialize the scanner module.
 }
 
