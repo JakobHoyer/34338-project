@@ -1,0 +1,8 @@
+<map id="turnServo0" name="turnServo0">
+<area shape="rect" id="Node000001" title="Moves the servo to 0 degrees position." alt="" coords="207,5,291,32"/>
+<area shape="rect" id="Node000002" href="$df/d89/send__modtag__temp_8ino.html#afe461d27b9c48d5921c00d521181f12f" title="Arduino loop function, runs continuously." alt="" coords="5,5,51,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="192,21,51,21,51,16,192,16"/>
+<area shape="rect" id="Node000003" href="$df/d89/send__modtag__temp_8ino.html#a24a52e244e93c93688295aafadbfb2c5" title="Turns both fan and radiator off." alt="" coords="99,31,159,57"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="192,33,160,40,159,35,191,28"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="83,35,50,27,52,22,84,30"/>
+</map>

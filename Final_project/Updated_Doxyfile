@@ -7,7 +7,10 @@ OUTPUT_DIRECTORY       = "./doxygen_output"
 CREATE_SUBDIRS         = YES
 OPTIMIZE_OUTPUT_FOR_C  = YES
 
-INPUT                  = C:\Users\anelh\34338-project\Scanner\scanner\scanner.cpp C:\Users\anelh\34338-project\Scanner\scanner\scanner.h C:\Users\anelh\34338-project\Scanner\scanner\scanner.ino
+INPUT                  = C:\Users\anelh\34338-project\Final_project\scanner\scanner.cpp C:\Users\anelh\34338-project\Final_project\scanner\scanner.h C:\Users\anelh\34338-project\Final_project\scanner\scanner.ino C:\Users\anelh\34338-project\Final_project\s_m_temp\send_modtag_temp
+
+RECURSIVE = YES
+
 FILE_PATTERNS          = *.ino *.cpp *.h 
 EXTRACT_ALL            = YES
 EXTENSION_MAPPING = ino=C++

@@ -1,0 +1,7 @@
+<map id="LED_Indication" name="LED_Indication">
+<area shape="rect" id="Node000001" title="Controls the RGB LED to reflect how the current temperature compares to the desired range." alt="" coords="235,5,345,32"/>
+<area shape="rect" id="Node000002" href="$df/d89/send__modtag__temp_8ino.html#a15cf985434a6e33276ce9e91a9f14c16" title="Reads and averages temperature from the ADC pin." alt="" coords="99,5,187,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="219,21,187,21,187,16,219,16"/>
+<area shape="rect" id="Node000003" href="$df/d89/send__modtag__temp_8ino.html#afe461d27b9c48d5921c00d521181f12f" title="Arduino loop function, runs continuously." alt="" coords="5,5,51,32"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="83,21,51,21,51,16,83,16"/>
+</map>

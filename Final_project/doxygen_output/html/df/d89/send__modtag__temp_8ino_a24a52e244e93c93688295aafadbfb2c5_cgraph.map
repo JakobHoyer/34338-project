@@ -1,0 +1,5 @@
+<map id="neutral" name="neutral">
+<area shape="rect" id="Node000001" title="Turns both fan and radiator off." alt="" coords="5,5,66,32"/>
+<area shape="rect" id="Node000002" href="$df/d89/send__modtag__temp_8ino.html#a47f8ea30a0453a3ac91978cc998c7b7e" title="Moves the servo to 0 degrees position." alt="" coords="114,5,198,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="66,16,98,16,98,21,66,21"/>
+</map>

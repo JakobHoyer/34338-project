@@ -1,0 +1,7 @@
+<map id="callback" name="callback">
+<area shape="rect" id="Node000001" title="Callback function for handling incoming MQTT messages." alt="" coords="5,31,75,57"/>
+<area shape="rect" id="Node000002" href="$d4/d77/scanner_8cpp.html#a57a7c83d25ae8dfb12c646d9adf3f2ba" title="Extracts a specific value from a delimited string." alt="" coords="138,5,210,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="75,35,123,26,124,31,76,40"/>
+<area shape="rect" id="Node000003" href="$df/d89/send__modtag__temp_8ino.html#ab3139b4e877798f0af7a2db4012de3bf" title="Adjusts the preferred temperature interval." alt="" coords="123,56,225,83"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="76,48,108,54,107,59,75,53"/>
+</map>

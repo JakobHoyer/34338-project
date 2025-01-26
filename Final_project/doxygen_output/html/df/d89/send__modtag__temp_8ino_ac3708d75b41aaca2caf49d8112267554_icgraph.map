@@ -1,0 +1,5 @@
+<map id="fanturnon" name="fanturnon">
+<area shape="rect" id="Node000001" title="Turns the fan on (connected to pin D1) and turns the radiator off (pin D4)." alt="" coords="99,5,174,32"/>
+<area shape="rect" id="Node000002" href="$df/d89/send__modtag__temp_8ino.html#afe461d27b9c48d5921c00d521181f12f" title="Arduino loop function, runs continuously." alt="" coords="5,5,51,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="83,21,51,21,51,16,83,16"/>
+</map>

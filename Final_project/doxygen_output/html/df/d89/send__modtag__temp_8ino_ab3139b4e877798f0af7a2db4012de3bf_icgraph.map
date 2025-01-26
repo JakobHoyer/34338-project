@@ -1,0 +1,5 @@
+<map id="Temp_interval" name="Temp_interval">
+<area shape="rect" id="Node000001" title="Adjusts the preferred temperature interval." alt="" coords="123,5,225,32"/>
+<area shape="rect" id="Node000002" href="$df/d89/send__modtag__temp_8ino.html#ae24061fe2bcdf43d9a38cd0c2ecedd4c" title="MQTT callback function." alt="" coords="5,5,75,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="107,21,75,21,75,16,107,16"/>
+</map>

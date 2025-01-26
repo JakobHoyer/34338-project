@@ -1,0 +1,9 @@
+<map id="setupscanner" name="setupscanner">
+<area shape="rect" id="Node000001" title="Initializes the RFID scanner and sets up the LCD display." alt="" coords="5,31,105,57"/>
+<area shape="rect" id="Node000002" href="$d4/d77/scanner_8cpp.html#ae24061fe2bcdf43d9a38cd0c2ecedd4c" title="MQTT callback function." alt="" coords="158,5,228,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="105,32,142,25,143,30,106,37"/>
+<area shape="rect" id="Node000004" href="$d4/d77/scanner_8cpp.html#ae5b88d967e3185d98053cf055c8b4f1f" title="Connects the ESP8266 to the specified WiFi network." alt="" coords="153,56,233,83"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="106,51,138,57,137,62,105,56"/>
+<area shape="rect" id="Node000003" href="$d4/d77/scanner_8cpp.html#a57a7c83d25ae8dfb12c646d9adf3f2ba" title="Extracts a specific value from a delimited string." alt="" coords="281,5,352,32"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="228,16,266,16,266,21,228,21"/>
+</map>

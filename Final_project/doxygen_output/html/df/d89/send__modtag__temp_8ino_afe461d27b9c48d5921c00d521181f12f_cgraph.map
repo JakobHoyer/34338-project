@@ -1,0 +1,22 @@
+<map id="loop" name="loop">
+<area shape="rect" id="Node000001" title="Arduino loop function, runs continuously." alt="" coords="5,183,51,209"/>
+<area shape="rect" id="Node000002" href="$df/d89/send__modtag__temp_8ino.html#a6cfd3910a419b94236d21fd00dcfe787" title="DHT sensor object." alt="" coords="129,5,168,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="30,181,51,117,70,78,97,42,114,29,117,34,101,46,75,80,56,119,35,183"/>
+<area shape="rect" id="Node000003" href="$df/d89/send__modtag__temp_8ino.html#ac3708d75b41aaca2caf49d8112267554" title="Turns the fan on (connected to pin D1) and turns the radiator off (pin D4)." alt="" coords="111,56,186,83"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="34,181,58,139,76,115,97,93,101,89,104,94,100,97,80,118,63,142,38,184"/>
+<area shape="rect" id="Node000004" href="$df/d89/send__modtag__temp_8ino.html#a24a52e244e93c93688295aafadbfb2c5" title="Turns both fan and radiator off." alt="" coords="119,107,179,133"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="50,180,112,140,115,144,52,184"/>
+<area shape="rect" id="Node000005" href="$df/d89/send__modtag__temp_8ino.html#a47f8ea30a0453a3ac91978cc998c7b7e" title="Moves the servo to 0 degrees position." alt="" coords="260,132,344,159"/>
+<area shape="poly" id="edge9_Node000001_Node000005" title=" " alt="" coords="51,189,244,153,245,158,52,195"/>
+<area shape="rect" id="Node000006" href="$df/d89/send__modtag__temp_8ino.html#a21fa3a9280643ef72f1b80792b60e0f0" title="Turns the radiator on (connected to pin D4) and turns the fan off (pin D1)." alt="" coords="99,208,199,235"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="52,198,84,205,83,210,50,203"/>
+<area shape="rect" id="Node000007" href="$df/d89/send__modtag__temp_8ino.html#a4bcd6ce7d04c38f8c4ff908d1fc50f86" title="Attempts to reconnect to the MQTT broker if the connection is lost." alt="" coords="110,259,188,285"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="48,207,100,244,108,249,105,253,97,249,45,212"/>
+<area shape="rect" id="Node000008" href="$df/d89/send__modtag__temp_8ino.html#a15cf985434a6e33276ce9e91a9f14c16" title="Reads and averages temperature from the ADC pin." alt="" coords="105,309,193,336"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="38,208,63,250,80,274,100,295,104,298,101,303,97,299,76,277,58,253,34,211"/>
+<area shape="rect" id="Node000010" href="$df/d89/send__modtag__temp_8ino.html#a407c28f3ebe14bc8f140776c6fdf9021" title="Moves the servo to 180 degrees position." alt="" coords="100,360,198,387"/>
+<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="35,209,56,273,75,312,101,346,103,349,99,352,97,350,70,314,51,275,30,211"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="180,122,245,133,244,139,179,128"/>
+<area shape="rect" id="Node000009" href="$df/d89/send__modtag__temp_8ino.html#a59e384347f9d8681f0e3c7643dee608d" title="Controls the RGB LED to reflect how the current temperature compares to the desired range." alt="" coords="247,309,357,336"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="193,320,231,320,231,325,193,325"/>
+</map>

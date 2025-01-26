@@ -1,0 +1,7 @@
+<map id="dht" name="dht">
+<area shape="rect" id="Node000001" title="DHT sensor object." alt="" coords="107,31,146,57"/>
+<area shape="rect" id="Node000002" href="$df/d89/send__modtag__temp_8ino.html#afe461d27b9c48d5921c00d521181f12f" title="Arduino loop function, runs continuously." alt="" coords="9,5,55,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="91,37,54,27,56,22,92,32"/>
+<area shape="rect" id="Node000003" href="$df/d89/send__modtag__temp_8ino.html#a4fc01d736fe50cf5b977f755b675f11d" title="Arduino setup function, runs once at startup." alt="" coords="5,56,59,83"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="92,56,60,65,59,60,91,51"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="Temp_sens" name="Temp_sens">
+<area shape="rect" id="Node000001" title="Reads and averages temperature from the ADC pin." alt="" coords="5,5,94,32"/>
+<area shape="rect" id="Node000002" href="$df/d89/send__modtag__temp_8ino.html#a59e384347f9d8681f0e3c7643dee608d" title="Controls the RGB LED to reflect how the current temperature compares to the desired range." alt="" coords="142,5,252,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="94,16,126,16,126,21,94,21"/>
+</map>
