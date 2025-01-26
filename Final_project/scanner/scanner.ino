@@ -65,6 +65,14 @@ void loop() {
   if (!rfid.PICC_ReadCardSerial())
     return;  
 
+ // check if card has previously been read and then display on the serial monitor for debugging.
+  if (rfid.uid.uidByte[0] != nuidPICC[0] || rfid.uid.uidByte[1] != nuidPICC[1] || rfid.uid.uidByte[2] != nuidPICC[2] || rfid.uid.uidByte[3] != nuidPICC[3]) {
+    Serial.println(F("A new card has been detected."));
+    // Store NUID into nuidPICC array
+    for (byte i = 0; i < 4; i++) {
+      nuidPICC[i] = rfid.uid.uidByte[i];
+    }
+
   // Print the UID of the scanned RFID card.
   Serial.print(F("RFID UID: "));
   Serial.print(F("In hex: "));
@@ -73,6 +81,10 @@ void loop() {
   Serial.print(F("In dec: "));
   printDec(rfid.uid.uidByte, rfid.uid.size);
   Serial.println();
+  }
+  else {
+    Serial.println(F("Card read previously."));
+  }
 
   // Puts the scanned UID number into a string to be transmitted to the cloud in hexidecimal format.
   for (int i = 0; i < 4; i++) {
